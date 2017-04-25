@@ -1,3 +1,6 @@
+
+
+#ifdef _QT_COMPILE
 #include "MainWindow.h"
 #include <QApplication>
 
@@ -9,3 +12,7 @@ int main(int argc, char *argv[])
 
     return a.exec();
 }
+#else
+
+
+#endif
