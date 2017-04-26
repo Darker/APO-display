@@ -26,7 +26,7 @@ protected:
 
     // color data
     std::vector<Color> pixmap;
-    std::vector<uint16_t> pixmapCache;
+    std::vector<uint32_t> pixmapCache;
     bool pixmapChanged;
 
     std::mutex startLock;

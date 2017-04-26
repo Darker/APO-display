@@ -57,7 +57,7 @@ void DisplayRenderer::renderLoop()
             }
             for (uint16_t x = 0; x < GAME_WIDTH ; x++) {
                  //parlcd_write_data(parlcd_mem_base, (uint16_t)pixmapCache[iterator++]);
-                 parlcd_write_data2x(parlcd_mem_base, *((uint32_t*)(&pixmapCache[iterator])));
+                 parlcd_write_data2x(parlcd_mem_base, pixmapCache[iterator]);
                  iterator+=2;
             }
         }
@@ -78,8 +78,12 @@ void DisplayRenderer::updatePixmapCache()
 {
     if(pixmapChanged) {
         pixmapCache.resize(pixmap.size());
-        for(size_t i=0, l=pixmap.size(); i<l; ++i) {
-            pixmapCache[i] = pixmap[i];
+        for(size_t i=0, l=pixmap.size(); i+1<l; i+=2) {
+            uint32_t colors = pixmap[i];
+            colors<<16;
+            colors = colors | pixmap[i+1];
+
+            pixmapCache[i] = colors;
         }
         pixmapChanged = false;
     }
