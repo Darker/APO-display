@@ -1,7 +1,7 @@
 #ifndef GAMEBUTTON_H
 #define GAMEBUTTON_H
 #include <stdint.h>
-#include <mutex>
+#include <atomic>
 class GameButton
 {
 public:
@@ -20,11 +20,9 @@ public:
     void clicked();
     void addMovement(int64_t offset);
 protected:
-    bool isClicked;
-    int64_t moveOffset;
+    std::atomic<bool> isClicked_;
+    std::atomic<int64_t> moveOffset;
     int64_t lastMoveOffset;
-    std::mutex movementMutex;
-    std::mutex clickMutex;
 };
 
 #endif // GAMEBUTTON_H
