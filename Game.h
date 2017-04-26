@@ -17,9 +17,10 @@ public:
     void movePlayer(int playerID, int offset);
     // This is not htread safe!
     // must lock internal shape array before copyinf
-    std::vector<Shape*> getShapes();
+    virtual std::vector<Shape*> getShapes();
     // one game tick
-    void tick();
+    virtual void tick();
+    virtual ~Game(){}
 protected:
     // Mutex for copying shapes
         // TODO later
