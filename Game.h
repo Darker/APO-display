@@ -5,6 +5,7 @@ class Pentagram;
 #include <vector>
 #include <chrono>
 #include <stdint.h>
+#include "Circle.h"
 
 #include "Pentagram.h"
 
@@ -31,7 +32,7 @@ protected:
     bool firstTick;
 
     // Some testing garbage
-    Pentagram pentac;
+    Circle circle;
 };
 
 #endif // GAME_H
