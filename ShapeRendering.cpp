@@ -101,6 +101,46 @@ void circle(std::vector<Color>& pixmap, const Color& color, int r, int x0, int y
     //}
 }
 
+void circleFill(std::vector<Color>& pixmap, const Color& color, int r, int x0, int y0, int width)
+{
+    //void drawcircle(int x0, int y0, int radius)
+    //{
+        int x = r;
+        int y = 0;
+        int err = 0;
+
+        while (x >= y)
+        {
+            // filled
+
+            line(pixmap, color, x0 + x, y0 + y, x0 - x, y0 + y, width);
+            line(pixmap, color, x0 + y, y0 + x, x0 - y, y0 + x, width);
+
+            line(pixmap, color, x0 - x, y0 - y, x0 + x, y0 - y, width);
+            line(pixmap, color, x0 - y, y0 - x, x0 + y, y0 - x, width);
+
+//            setPixel(pixmap, color, x0 + x, y0 + y, width);
+//            setPixel(pixmap, color, x0 - x, y0 + y, width);
+//            setPixel(pixmap, color, x0 + y, y0 + x, width);
+//            setPixel(pixmap, color, x0 - y, y0 + x, width);
+//            setPixel(pixmap, color, x0 - x, y0 - y, width);
+//            setPixel(pixmap, color, x0 + x, y0 - y, width);
+//            setPixel(pixmap, color, x0 - y, y0 - x, width);
+//            setPixel(pixmap, color, x0 + y, y0 - x, width);
+
+            if (err <= 0)
+            {
+                y += 1;
+                err += 2*y + 1;
+            }
+            if (err > 0)
+            {
+                x -= 1;
+                err -= 2*x + 1;
+            }
+        }
+    //}
+}
 void lineAngle(std::vector<Color>& pixmap, const Color& color, int x1, int y1, double angle, int length, int width)
 {
     line(pixmap, color, x1, y1, (int)std::round(std::cos(angle)*length), (int)std::round(std::sin(angle)*length), width);
