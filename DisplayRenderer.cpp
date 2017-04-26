@@ -45,19 +45,19 @@ void DisplayRenderer::renderLoop()
     while(true) {
         const std::chrono::steady_clock::time_point render_start = std::chrono::steady_clock::now();
         iterator = 0;
+        pixmapLock.lock();
+        if(pixmapChanged)
+            updatePixmapCache();
+        pixmapLock.unlock();
+
+        uint32_t maxIter = pixmapCache.size();
         for (uint16_t y = 0; y < GAME_HEIGHT ; y++) {
-            pixmapLock.lock();
-            if(iterator>=pixmap.size()) {
-                pixmapLock.unlock();
+            if(iterator>=maxIter) {
                 break;
             }
-            if(pixmapChanged)
-                updatePixmapCache();
             for (uint16_t x = 0; x < GAME_WIDTH ; x++) {
-                  parlcd_write_data(parlcd_mem_base, (uint16_t)pixmap[iterator++]);
+                  parlcd_write_data(parlcd_mem_base, (uint16_t)pixmapCache[iterator++]);
             }
-            pixmapLock.unlock();
-            // just a little time for other threads to access the pixmap
         }
         uint32_t renderDuration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - render_start).count();
         // if we didn't waste all 33 ms rendering, we can take a break now
