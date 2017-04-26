@@ -1,1 +1,2 @@
 obj/Color.o obj/display.o obj/PPMReader.o
+*.user
