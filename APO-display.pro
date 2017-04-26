@@ -17,6 +17,8 @@ CONFIG += c++11
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += _QT_COMPILE
+QMAKE_CXXFLAGS += -Wunused-parameter
+
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
@@ -25,21 +27,32 @@ DEFINES += _QT_COMPILE
 
 SOURCES += \
         main.cpp \
-        MainWindow.cpp \
-        Plotter.cpp \
        Color.cpp \
     Game.cpp \
-    PaintWidget.cpp \
     Shape.cpp \
-    ShapeRendering.cpp
+    ShapeRendering.cpp \
+    Pentagram.cpp \
+    display_magic.cpp \
+    DisplayRenderer.cpp \
+    mainLinux.cpp \
+    qt_stuff/mainQt.cpp \
+    qt_stuff/MainWindow.cpp \
+    qt_stuff/PaintWidget.cpp \
+    qt_stuff/Plotter.cpp
 
 HEADERS += \
-        MainWindow.h \
-    Plotter.h \
     Color.h \
     Game.h \
-    PaintWidget.h \
-    Shape.h
+    Shape.h \
+    defines.h \
+    Pentagram.h \
+    ShapeRendering.h \
+    display_magic.h \
+    DisplayRenderer.h \
+    mainFunctions.h \
+    qt_stuff/MainWindow.h \
+    qt_stuff/PaintWidget.h \
+    qt_stuff/Plotter.h \
+    qt_stuff/QtVirtualDisplay.h
 
-FORMS += \
-        MainWindow.ui
+FORMS += qt_stuff/MainWindow.ui

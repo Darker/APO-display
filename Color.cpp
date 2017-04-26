@@ -12,6 +12,12 @@ Color::Color(const uint8_t r, const uint8_t g, const uint8_t b)
     , g(g)
     , b(b) {}
 
+uint32_t Color::qRGBValue() const
+{
+    return 0xFF000000 | r<<16 | g<<8 | b;
+}
+
+
 Color::operator uint16_t() const {
     return ((((uint16_t)r)<<8)&RED) | ((((uint16_t)g)<<3)&GREEN) | ((((uint16_t)b>>3))&BLUE);
 }
