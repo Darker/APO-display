@@ -125,18 +125,24 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QDial" name="dial">
+         <widget class="QDial" name="redSpinner">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="tracking">
+           <bool>false</bool>
+          </property>
           <property name="wrapping">
            <bool>true</bool>
           </property>
           <property name="notchTarget">
-           <double>255.000000000000000</double>
+           <double>5.000000000000000</double>
           </property>
           <property name="notchesVisible">
            <bool>true</bool>
@@ -144,9 +150,9 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="redButton">
           <property name="text">
-           <string>PushButton</string>
+           <string>RED</string>
           </property>
          </widget>
         </item>
@@ -155,18 +161,24 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QDial" name="dial_2">
+         <widget class="QDial" name="blueSpinner">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="tracking">
+           <bool>false</bool>
+          </property>
           <property name="wrapping">
            <bool>true</bool>
           </property>
           <property name="notchTarget">
-           <double>255.000000000000000</double>
+           <double>5.000000000000000</double>
           </property>
           <property name="notchesVisible">
            <bool>true</bool>
@@ -174,9 +186,9 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="blueButton">
           <property name="text">
-           <string>PushButton</string>
+           <string>BLUE</string>
           </property>
          </widget>
         </item>
@@ -185,18 +197,24 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QDial" name="dial_3">
+         <widget class="QDial" name="greenSpinner">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="tracking">
+           <bool>false</bool>
+          </property>
           <property name="wrapping">
            <bool>true</bool>
           </property>
           <property name="notchTarget">
-           <double>255.000000000000000</double>
+           <double>5.000000000000000</double>
           </property>
           <property name="notchesVisible">
            <bool>true</bool>
@@ -204,9 +222,9 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_3">
+         <widget class="QPushButton" name="greenButton">
           <property name="text">
-           <string>PushButton</string>
+           <string>GREEN</string>
           </property>
          </widget>
         </item>
