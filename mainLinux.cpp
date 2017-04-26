@@ -5,6 +5,10 @@
 #include <stddef.h>
 #include <thread>
 #include <mutex>
+#include <iostream>
+#ifdef _QT_COMPILE
+    #include <QApplication>
+#endif
 Game game;
 std::mutex nextFrame;
 DisplayRenderer renderer;
@@ -50,6 +54,7 @@ int mainLinux(int argc, char *argv[])
     nextFrame.lock();
     std::thread drawThread(paintGame);
     std::thread gameThread(runGame);
+    renderer.start();
     drawThread.join();
     gameThread.join();
 }

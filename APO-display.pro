@@ -27,32 +27,32 @@ QMAKE_CXXFLAGS += -Wunused-parameter
 
 SOURCES += \
         main.cpp \
-        MainWindow.cpp \
-        Plotter.cpp \
        Color.cpp \
     Game.cpp \
-    PaintWidget.cpp \
     Shape.cpp \
     ShapeRendering.cpp \
     Pentagram.cpp \
     display_magic.cpp \
     DisplayRenderer.cpp \
-    mainQt.cpp \
-    mainLinux.cpp
+    mainLinux.cpp \
+    qt_stuff/mainQt.cpp \
+    qt_stuff/MainWindow.cpp \
+    qt_stuff/PaintWidget.cpp \
+    qt_stuff/Plotter.cpp
 
 HEADERS += \
-        MainWindow.h \
-    Plotter.h \
     Color.h \
     Game.h \
-    PaintWidget.h \
     Shape.h \
     defines.h \
     Pentagram.h \
     ShapeRendering.h \
     display_magic.h \
     DisplayRenderer.h \
-    mainFunctions.h
+    mainFunctions.h \
+    qt_stuff/MainWindow.h \
+    qt_stuff/PaintWidget.h \
+    qt_stuff/Plotter.h \
+    qt_stuff/QtVirtualDisplay.h
 
-FORMS += \
-        MainWindow.ui
+FORMS += qt_stuff/MainWindow.ui

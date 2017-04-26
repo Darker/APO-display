@@ -27,4 +27,6 @@ void parlcd_write_data(unsigned char *parlcd_mem_base, uint16_t data);
 void parlcd_write_data2x(unsigned char *parlcd_mem_base, uint32_t data);
 void parlcd_delay(int msec);
 void parlcd_hx8357_init(unsigned char *parlcd_mem_base);
+
+
 #endif // DISPLAY_MAGIC_H

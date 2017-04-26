@@ -19,6 +19,7 @@ signals:
     void updateRequested(std::vector<Color> colors);
 public slots:
     void update(const std::vector<Color>& colors);
+    Plotter* getPlotter();
 private:
     Ui::MainWindow *ui;
 };

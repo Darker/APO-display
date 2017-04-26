@@ -2,6 +2,7 @@
 #include "defines.h"
 #include "display_magic.h"
 #include <chrono>
+#include <iostream>
 
 DisplayRenderer::DisplayRenderer()
     : pixmapChanged(true)
@@ -13,6 +14,7 @@ void DisplayRenderer::updatePixmap(const std::vector<Color>& newPixmap)
 {
     pixmapLock.lock();
     pixmap = newPixmap;
+    pixmapChanged = true;
     pixmapLock.unlock();
 }
 
@@ -45,6 +47,10 @@ void DisplayRenderer::renderLoop()
         iterator = 0;
         for (uint16_t y = 0; y < GAME_HEIGHT ; y++) {
             pixmapLock.lock();
+            if(iterator>=pixmap.size()) {
+                pixmapLock.unlock();
+                break;
+            }
             if(pixmapChanged)
                 updatePixmapCache();
             for (uint16_t x = 0; x < GAME_WIDTH ; x++) {
@@ -56,7 +62,12 @@ void DisplayRenderer::renderLoop()
         uint32_t renderDuration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - render_start).count();
         // if we didn't waste all 33 ms rendering, we can take a break now
         if(renderDuration<minInterval) {
+            const uint32_t restSleep = minInterval-renderDuration;
+            std::cout<<"Rendering took "<<renderDuration<<" milliseconds. Sleeping for another "<<restSleep<<" ms\n";
             std::this_thread::sleep_for(std::chrono::milliseconds(minInterval-renderDuration));
+        }
+        else {
+            std::cout<<"FPS WARNING: Rendering took "<<renderDuration<<" milliseconds!\n";
         }
     }
 }

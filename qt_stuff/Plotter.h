@@ -15,7 +15,9 @@ signals:
 
 public slots:
     void plot();
+    //void plotRange(quint32 start, quint32 end);
     void update(const std::vector<Color>& data);
+    void setPixel(quint32 x, quint32 y, Color color);
 
 private:
     /*inline QPointF map(double x, double y) {

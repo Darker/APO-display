@@ -19,3 +19,8 @@ void MainWindow::update(const std::vector<Color>& colors)
 {
     emit updateRequested(colors);
 }
+
+Plotter*MainWindow::getPlotter()
+{
+    return ui->widget->getPlotter();
+}

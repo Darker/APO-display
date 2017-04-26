@@ -273,11 +273,78 @@ void parlcd_hx8357_init(unsigned char *parlcd_mem_base)
 #endif
 }
 #else
+#include "qt_stuff/QtVirtualDisplay.h"
+#include <QObject>
 #include <QThread>
-void *map_phys_address(off_t region_base, size_t region_size, int opt_cached) {return nullptr;}
-void parlcd_write_cmd(unsigned char *parlcd_mem_base, uint16_t cmd) {}
+#include <QApplication>
+#include <QTimer>
+#include "qt_stuff/MainWindow.h"
+#include "qt_stuff/Plotter.h"
+#include "defines.h"
+
+
+QtVirtualDisplayPrivate::QtVirtualDisplayPrivate()
+    : QObject(nullptr)
+    , app(nullptr)
+    , window(nullptr)
+    , pixelIndex(0)
+{
+    this->moveToThread(&mainThread);
+    QObject::connect(&mainThread, &QThread::started, this, &QtVirtualDisplayPrivate::guiThread);
+    initLock.lock();
+    mainThread.start();
+    initLock.lock();
+}
+
+void QtVirtualDisplayPrivate::guiThread()
+{
+    int argc = 0;
+    char* argv[] = {""};
+    app = new QApplication(argc,  argv);
+    //app = qApp;
+    app->moveToThread(&mainThread);
+    window = new MainWindow();
+    QObject::connect(this, &QtVirtualDisplayPrivate::setPixel, window->getPlotter(),&Plotter::setPixel, Qt::QueuedConnection);
+    QObject::connect(this, &QtVirtualDisplayPrivate::plot, window->getPlotter(), &Plotter::plot, Qt::QueuedConnection);
+    Plotter* plotterPtr = window->getPlotter();
+    QTimer::singleShot(0, plotterPtr, [plotterPtr]() {
+        std::vector<Color> empty;
+        empty.resize(GAME_WIDTH*GAME_HEIGHT);
+        plotterPtr->update(empty);
+    });
+    window->show();
+    initLock.unlock();
+    //while(true)
+    //    app->processEvents(QEventLoop::AllEvents, 1000);
+    QApplication::exec();
+}
+void QtVirtualDisplayPrivate::setNextPixel(uint16_t color) {
+    emit setPixel(pixelIndex%GAME_WIDTH, pixelIndex/(int)GAME_WIDTH, color);
+    pixelIndex++;
+    if(pixelIndex>=GAME_WIDTH*GAME_HEIGHT) {
+        emit plot();
+        pixelIndex = 0;
+    }
+}
+
+QtVirtualDisplayPrivate::~QtVirtualDisplayPrivate() {
+    delete window;
+    mainThread.terminate();
+}
+
+
+
+
+void *map_phys_address(off_t region_base, size_t region_size, int opt_cached) {
+    return new QtVirtualDisplayPrivate();
+}
+void parlcd_write_cmd(unsigned char *parlcd_mem_base, uint16_t cmd) {
+
+}
 void parlcd_write_data(unsigned char *parlcd_mem_base, uint16_t data) {
-    QThread::currentThread()->sleep(1);
+    if(QtVirtualDisplayPrivate* virtualDisplay = static_cast<QtVirtualDisplayPrivate*>((void*)parlcd_mem_base)) {
+        virtualDisplay->setNextPixel(data);
+    }
 }
 void parlcd_write_data2x(unsigned char *parlcd_mem_base, uint32_t data) {}
 void parlcd_delay(int msec) {
@@ -285,3 +352,4 @@ void parlcd_delay(int msec) {
 }
 void parlcd_hx8357_init(unsigned char *parlcd_mem_base) {}
 #endif // _QT_COMPILE
+

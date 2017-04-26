@@ -14,17 +14,19 @@ protected:
     void paintEvent(QPaintEvent *);
 
 public slots:
-    void updatePlot(QImage p) {
-        plot = p;
-        repaint();
-    }
+    void updatePlot(QImage p);
     Plotter* getPlotter() const;
     void updateImage(const std::vector<Color>& colors);
+    QSize sizeHint() const override;
+
+    void resizeEvent(QResizeEvent * event) override;
 signals:
     void updateImageRequest(const std::vector<Color>& colors);
-private:
+protected:
     QImage plot;
     Plotter* plotter;
+    mutable quint32 lastHeight;
+    mutable quint32 lastWidth;
 };
 
 #endif // PAINTWIDGET_H
