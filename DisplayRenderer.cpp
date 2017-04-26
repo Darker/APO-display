@@ -12,6 +12,10 @@ DisplayRenderer::DisplayRenderer()
 
 void DisplayRenderer::updatePixmap(const std::vector<Color>& newPixmap)
 {
+    /*if(pixmapLock.try_lock()) {
+        pixmap = newPixmap;
+        pixmapChanged = true;
+    }*/
     pixmapLock.lock();
     pixmap = newPixmap;
     pixmapChanged = true;
@@ -46,20 +50,23 @@ void DisplayRenderer::renderLoop()
         const std::chrono::steady_clock::time_point render_start = std::chrono::steady_clock::now();
         iterator = 0;
         pixmapLock.lock();
-        if(pixmapChanged)
+        if(pixmapChanged) {
             updatePixmapCache();
-        pixmapLock.unlock();
+            pixmapLock.unlock();
+        }
+        else {
+            pixmapLock.unlock();
+        }
 
-        uint32_t maxIter = pixmapCache.size();
-        for (uint16_t y = 0; y < GAME_HEIGHT ; y++) {
-            if(iterator+1>=maxIter) {
-                break;
-            }
-            for (uint16_t x = 0; x < GAME_WIDTH ; x++) {
-                 //parlcd_write_data(parlcd_mem_base, (uint16_t)pixmapCache[iterator++]);
-                 parlcd_write_data2x(parlcd_mem_base, pixmapCache[iterator]);
-                 iterator+=2;
-            }
+        const uint32_t maxIter = pixmapCache.size();
+        const uint32_t colors = GAME_HEIGHT*GAME_WIDTH;
+        for (; iterator+1<maxIter; iterator+=2) {
+            //parlcd_write_data(parlcd_mem_base, (uint16_t)pixmapCache[iterator++]);
+            parlcd_write_data2x(parlcd_mem_base, pixmapCache[iterator]);
+        }
+        for (; iterator+1<colors; iterator+=2) {
+            //parlcd_write_data(parlcd_mem_base, (uint16_t)pixmapCache[iterator++]);
+            parlcd_write_data2x(parlcd_mem_base, (uint32_t)0);
         }
         uint32_t renderDuration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - render_start).count();
         // if we didn't waste all 33 ms rendering, we can take a break now
