@@ -45,7 +45,7 @@ void DisplayRenderer::renderLoop()
 
 
     // 1000/30 - approx 30 fps as max fps
-    const int minInterval = 33;
+    const int minInterval = 45;
     while(true) {
         const std::chrono::steady_clock::time_point render_start = std::chrono::steady_clock::now();
         iterator = 0;
