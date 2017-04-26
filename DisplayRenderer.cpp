@@ -86,7 +86,8 @@ void DisplayRenderer::updatePixmapCache()
     if(pixmapChanged) {
         pixmapCache.resize(pixmap.size());
         for(size_t i=0, l=pixmap.size(); i+1<l; i+=2) {
-            uint32_t colors = ((uint32_t)pixmap[i])<<16;
+            uint32_t colors = pixmap[i];
+            colors = colors<<16;
             colors = colors | pixmap[i+1];
 
             pixmapCache[i] = colors;
