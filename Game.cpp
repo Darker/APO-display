@@ -2,7 +2,7 @@
 
 #include "defines.h"
 Game::Game()
-    : pentac(100, GAME_WIDTH/2, GAME_HEIGHT/2)
+    : circle(180,210,100)
 {
 
 }
@@ -17,7 +17,7 @@ std::vector<Shape*> Game::getShapes()
     std::vector<Shape*> returnArray;
     // LOCK MUTEX!
     // copy every shape into new array and return that array
-    returnArray.push_back(pentac.cloneNew());
+    returnArray.push_back(circle.cloneNew());
     return returnArray;
 }
 
@@ -27,7 +27,7 @@ void Game::tick()
     // should be something like 0.05
     double deltaT = sinceLastTick()/1000.0;
     const double rotations_per_second = 0.05;
-    pentac.rotation += rotations_per_second*deltaT*2.0*GAME_PI;
+   //pentac.rotation += rotations_per_second*deltaT*2.0*GAME_PI;
 }
 
 uint32_t Game::sinceLastTick()

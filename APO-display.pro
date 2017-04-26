@@ -55,6 +55,6 @@ HEADERS += \
     qt_stuff/PaintWidget.h \
     qt_stuff/Plotter.h \
     qt_stuff/QtVirtualDisplay.h \
-    circle.h
+    Circle.h
 
 FORMS += qt_stuff/MainWindow.ui
