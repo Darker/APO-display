@@ -7,12 +7,11 @@ int main(int argc, char *argv[])
 }
 #else
 #include "defines.h"
-Game game;
 void runGame() {
 
 }
 int main(int argc, char *argv[])
 {
-
+    return mainLinux(argc, argv);
 }
 #endif
