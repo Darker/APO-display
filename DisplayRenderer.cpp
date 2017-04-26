@@ -52,11 +52,13 @@ void DisplayRenderer::renderLoop()
 
         uint32_t maxIter = pixmapCache.size();
         for (uint16_t y = 0; y < GAME_HEIGHT ; y++) {
-            if(iterator>=maxIter) {
+            if(iterator+1>=maxIter) {
                 break;
             }
             for (uint16_t x = 0; x < GAME_WIDTH ; x++) {
-                  parlcd_write_data(parlcd_mem_base, (uint16_t)pixmapCache[iterator++]);
+                 //parlcd_write_data(parlcd_mem_base, (uint16_t)pixmapCache[iterator++]);
+                 parlcd_write_data2x(parlcd_mem_base, *((uint32_t*)(&pixmapCache[iterator])));
+                 iterator+=2;
             }
         }
         uint32_t renderDuration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - render_start).count();
