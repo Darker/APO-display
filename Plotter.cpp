@@ -3,7 +3,13 @@
 #include <QPainter>
 #include <QPen>
 #include <QDebug>
-Plotter::Plotter(QSize size, QRectF range, QVector<double> data, QObject *parent) : QObject(parent), _size(size), _range(range), _data(data)
+#include <Color.h>
+#include <QtMath>
+#include <cstdlib>
+
+Plotter::Plotter(QSize size, QObject* parent)
+    : QObject(parent)
+    , size(size)
 {
 
 }
@@ -11,16 +17,42 @@ Plotter::Plotter(QSize size, QRectF range, QVector<double> data, QObject *parent
 void Plotter::plot() {
     QElapsedTimer t;
     t.start();
-    QImage img(_size, QImage::Format_ARGB32_Premultiplied);
-    img.fill(Qt::white);
-    QPainter p(&img);
+    QImage img(size.width(), size.height(), QImage::Format_RGB888);
+    //img.fill(Qt::black);
+    unsigned char* const rawImage = img.bits();
+    //unsigned char* const rawImage = (unsigned char*)std::malloc(size.width()*size.height()*3);
+    for (int i = 0; i < data.size(); i++) {
+        const Color& color = data[i];
+        const int pos = i*3;
+        rawImage[pos] = color.r;
+        rawImage[pos+1] = color.g;
+        rawImage[pos+2] = color.b;
+        //const int x = i%size.width();
+        //const int y = i/size.width();
+        //img.setPixel(x, y, color.qRGBValue());
+    }
+
+    //img.loadFromData(rawImage,size.width()*size.height()*3);
+    /*QPainter p(&img);
     QPen pen(Qt::darkBlue);
     pen.setWidth(1);
     p.setPen(pen);
-    for (int i = 0; i < _data.size(); i += 2) {
-        p.drawPoint(map(_data[i], _data[i + 1]));
-    }
+    for (int i = 0; i < data.size(); i ++) {
+        const Color& color = data[i];
+        p.setPen(QColor(color.r,color.g,color.b));
+        const int x = i%size.width();
+        const int y = i/(double)size.width();
+        p.drawPoint(x, y);
+    }*/
+
     qDebug() << "plotted in" << t.elapsed() << "msec";
     emit done(img);
     emit cleanup();
+    //delete rawImage;
+}
+
+void Plotter::update(const std::vector<Color>& newData)
+{
+    data = newData;
+    plot();
 }

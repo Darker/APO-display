@@ -1,0 +1,7 @@
+#ifndef DEFINES_H
+#define DEFINES_H
+
+#define GAME_WIDTH 480
+#define GAME_HEIGHT 320
+#define GAME_PI 3.14159265358979323846
+#endif // DEFINES_H

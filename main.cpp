@@ -1,18 +1,17 @@
-
-
+#include "mainFunctions.h"
 #ifdef _QT_COMPILE
-#include "MainWindow.h"
-#include <QApplication>
-
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
-
-    return a.exec();
+    return mainQt(argc, argv);
 }
 #else
+#include "defines.h"
+Game game;
+void runGame() {
 
+}
+int main(int argc, char *argv[])
+{
 
+}
 #endif

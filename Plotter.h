@@ -3,11 +3,11 @@
 
 #include <QObject>
 #include <QImage>
-
+#include <Color.h>
 class Plotter : public QObject {
     Q_OBJECT
 public:
-    Plotter(QSize size, QRectF range, QVector<double> data, QObject* parent=nullptr);
+    Plotter(QSize size, QObject* parent=nullptr);
 
 signals:
     void done(QImage);
@@ -15,16 +15,16 @@ signals:
 
 public slots:
     void plot();
+    void update(const std::vector<Color>& data);
 
 private:
-    inline QPointF map(double x, double y) {
+    /*inline QPointF map(double x, double y) {
         return QPointF(_size.width() * (x / (_range.width() - _range.x())),
                        _size.height() * (y / (_range.height() - _range.y())));
-    }
+    }*/
 
-    QSize _size;
-    QRectF _range;
-    QVector<double> _data;
+    QSize size;
+    std::vector<Color> data;
 };
 
 #endif // PLOTTER_H

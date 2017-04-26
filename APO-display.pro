@@ -17,6 +17,8 @@ CONFIG += c++11
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += _QT_COMPILE
+QMAKE_CXXFLAGS += -Wunused-parameter
+
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
@@ -31,7 +33,12 @@ SOURCES += \
     Game.cpp \
     PaintWidget.cpp \
     Shape.cpp \
-    ShapeRendering.cpp
+    ShapeRendering.cpp \
+    Pentagram.cpp \
+    display_magic.cpp \
+    DisplayRenderer.cpp \
+    mainQt.cpp \
+    mainLinux.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -39,7 +46,13 @@ HEADERS += \
     Color.h \
     Game.h \
     PaintWidget.h \
-    Shape.h
+    Shape.h \
+    defines.h \
+    Pentagram.h \
+    ShapeRendering.h \
+    display_magic.h \
+    DisplayRenderer.h \
+    mainFunctions.h
 
 FORMS += \
         MainWindow.ui

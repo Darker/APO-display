@@ -15,4 +15,12 @@ class Color {
         operator uint16_t() const;
         operator std::string() const;
         uint16_t asRGB565() {return (uint16_t)*this;}
+        uint32_t qRGBValue() const;
 };
+
+#ifdef _QT_COMPILE
+#include <QtCore>
+Q_DECLARE_METATYPE(Color)
+#include <vector>
+Q_DECLARE_METATYPE(std::vector<Color>)
+#endif
