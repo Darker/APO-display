@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include <thread>
 #include <mutex>
+#include <vector>
 
 class DisplayRenderer
 {
