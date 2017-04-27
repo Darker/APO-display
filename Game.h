@@ -6,6 +6,7 @@ class Pentagram;
 #include <chrono>
 #include <stdint.h>
 #include "Circle.h"
+#include "Platform.h"
 
 #include "Pentagram.h"
 
@@ -34,6 +35,8 @@ protected:
 
     // Some testing garbage
     Circle circle;
+    Platform platform1;
+    Platform platform2;
 };
 
 #endif // GAME_H

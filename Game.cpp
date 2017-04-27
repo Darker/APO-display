@@ -4,6 +4,8 @@
 #include "defines.h"
 Game::Game()
     : circle(GAME_WIDTH/2,GAME_HEIGHT/2,10)
+    ,platform1(200,60)
+    ,platform2(2000,60)
     ,firstTick(true)
 {
 
@@ -31,6 +33,8 @@ void Game::tick()
     const double rotations_per_second = 0.05;
 
    //pentac.rotation += rotations_per_second*deltaT*2.0*GAME_PI;
+
+
    //movement of circle
     circle.x+=deltaT*1;
     circle.y+=deltaT*1;

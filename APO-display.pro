@@ -40,7 +40,7 @@ SOURCES += \
     qt_stuff/PaintWidget.cpp \
     qt_stuff/Plotter.cpp \
     Circle.cpp \
-    Base.cpp
+    Platform.cpp
     GameButton.cpp
 
 HEADERS += \
@@ -58,7 +58,7 @@ HEADERS += \
     qt_stuff/Plotter.h \
     qt_stuff/QtVirtualDisplay.h \
     Circle.h \
-    Base.h
+    Platform.h
     GameButton.h
 
 FORMS += qt_stuff/MainWindow.ui
