@@ -4,8 +4,8 @@
 #include "defines.h"
 Game::Game()
     : circle(GAME_WIDTH/2,GAME_HEIGHT/2,10)
-    , platform1(150,15)
-    , platform2(150,15)
+    , platform1(150,15,2,80)
+    , platform2(150,15,-40,80)
 {
 
 }

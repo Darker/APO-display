@@ -104,7 +104,7 @@ void circle(std::vector<Color>& pixmap, const Color& color, const int r, const i
 
 void circleFill(std::vector<Color>& pixmap, const Color& color, const int r, const int x0, const int y0, const int width)
 {
-    //void drawcircle(int x0, int y0, int radius)
+
     //{
         int x = r;
         int y = 0;
