@@ -1,2 +1,2 @@
-obj/Color.o obj/display.o obj/PPMReader.o
+obj/**
 *.user

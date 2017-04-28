@@ -40,7 +40,15 @@ SOURCES += \
     qt_stuff/PaintWidget.cpp \
     qt_stuff/Plotter.cpp \
     Circle.cpp \
-    Base.cpp
+    Base.cpp \
+    GameJakub.cpp \
+    GameButton.cpp \
+    qt_stuff/SpinnerButton.cpp \
+    ShapeRenderingAntialiased.cpp \
+    UDPInterface.cpp \
+    ShapePixmap.cpp \
+    oldshit/display.cpp \
+    PPMReader.cpp
     GameButton.cpp
 
 HEADERS += \
@@ -58,7 +66,19 @@ HEADERS += \
     qt_stuff/Plotter.h \
     qt_stuff/QtVirtualDisplay.h \
     Circle.h \
-    Base.h
+    Base.h \
+    GameJakub.h \
+    GameButton.h \
+    qt_stuff/SpinnerButton.h \
+    UDPInterface.h \
+    ShapePixmap.h \
+    threading.h \
+    libs/mingw.mutex.h \
+    libs/mingw.thread.h \
+    libs/stb_image.h \
+    libs/stb_truetype.h \
+    PPMReader.h
     GameButton.h
 
-FORMS += qt_stuff/MainWindow.ui
+FORMS += qt_stuff/MainWindow.ui \
+    qt_stuff/SpinnerButton.ui

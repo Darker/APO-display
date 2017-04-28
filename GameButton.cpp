@@ -1,6 +1,9 @@
 #include "GameButton.h"
 
 GameButton::GameButton()
+    : moveOffset(0)
+    , lastMoveOffset(0)
+    , isClicked_(false)
 {
 
 }

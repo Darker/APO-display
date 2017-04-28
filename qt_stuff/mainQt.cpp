@@ -9,6 +9,7 @@
 #include "Shape.h"
 #include "ShapeRendering.h"
 #include "defines.h"
+#include "GameJakub.h"
 int mainQt(int argc, char *argv[]) {
     // Register meta types for events
     qRegisterMetaType<Color>("Color");
@@ -17,7 +18,12 @@ int mainQt(int argc, char *argv[]) {
     QApplication a(argc, argv);
     MainWindow* w = new MainWindow();
     w->show();
-    Game* game = new Game();
+    Game* game = nullptr;
+#ifdef _JAKUB
+    game = new GameJakub();
+#else
+    game = new Game();
+#endif
     QTimer renderLoop;
     std::vector<Color>* pixmapPtr = new std::vector<Color>();
 
@@ -30,7 +36,7 @@ int mainQt(int argc, char *argv[]) {
         std::vector<Shape*> shapes = game->getShapes();
 
         for(size_t i=0, l=shapes.size(); i<l; ++i) {
-            shapes[i]->render(pixmap, GAME_WIDTH, GAME_HEIGHT);
+            shapes[i]->renderAntialiased(pixmap, GAME_WIDTH, GAME_HEIGHT);
             delete shapes[i];
         }
         w->update(pixmap);
@@ -41,6 +47,23 @@ int mainQt(int argc, char *argv[]) {
         game->tick();
     });
     gameLoop.start(10);
+
+    if(GameJakub* testGame = dynamic_cast<GameJakub*>(game)) {
+        QObject::connect(w, &MainWindow::buttonMoved, [testGame](const int index, const qint16 offset) {
+            switch(index) {
+            case 0: testGame->button1.addMovement(offset);break;
+            case 1: testGame->button2.addMovement(offset);break;
+            case 2: testGame->button3.addMovement(offset);break;
+            }
+        });
+        QObject::connect(w, &MainWindow::buttonMoved, [testGame](const int index) {
+            switch(index) {
+            case 0: testGame->button1.clicked();break;
+            case 1: testGame->button2.clicked();break;
+            case 2: testGame->button3.clicked();break;
+            }
+        });
+    }
 
     int returnValue = a.exec();
     delete game;

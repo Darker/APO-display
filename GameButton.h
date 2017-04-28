@@ -2,6 +2,7 @@
 #define GAMEBUTTON_H
 #include <stdint.h>
 #include <atomic>
+
 class GameButton
 {
 public:

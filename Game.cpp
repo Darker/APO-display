@@ -4,7 +4,7 @@
 #include "defines.h"
 Game::Game()
     : circle(GAME_WIDTH/2,GAME_HEIGHT/2,10)
-    ,firstTick(true)
+    , firstTick(true)
 {
 
 }

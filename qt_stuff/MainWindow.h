@@ -16,7 +16,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     virtual ~MainWindow();
 signals:
+    // This signal is emitted for the underlying Plotter
     void updateRequested(std::vector<Color> colors);
+    void buttonMoved(int buttonId, qint16 offset);
+    void buttonClicked(int buttonId);
 public slots:
     void update(const std::vector<Color>& colors);
     Plotter* getPlotter();

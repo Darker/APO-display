@@ -1,5 +1,6 @@
 #include "ShapeRendering.h"
 #include <cmath>
+#include <cstring>
 // Shape render implementations here
 #define sgn(x) (x==0?0:(x<0?-1:1))
 void setPixel(std::vector<Color>& pixmap, const Color& color, int x, int y, int width)
@@ -144,4 +145,22 @@ void circleFill(std::vector<Color>& pixmap, const Color& color, int r, int x0, i
 void lineAngle(std::vector<Color>& pixmap, const Color& color, int x1, int y1, double angle, int length, int width)
 {
     line(pixmap, color, x1, y1, (int)std::round(std::cos(angle)*length), (int)std::round(std::sin(angle)*length), width);
+}
+
+void setPixmap(std::vector<Color>& pixmap, int width, const std::vector<Color>& sourcePixmap, int x, int y, int sourceWidth)
+{
+    if(x>=width)
+        return;
+    const int renderWidth = std::min(sourceWidth, width-x);
+    // offset for rendering
+    int tg_offset = y*width+x;
+    const int tg_end = pixmap.size();
+
+    int sc_offset = 0;
+    const int sc_end = sourcePixmap.size();
+
+    for(; tg_offset<tg_end && sc_offset<sc_end; tg_offset+=width) {
+        memcpy(&pixmap[tg_offset], &sourcePixmap[sc_offset], sizeof(Color)*renderWidth);
+        sc_offset+=sourceWidth;
+    }
 }

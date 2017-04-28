@@ -2,8 +2,7 @@
 #define DISPLAYRENDERER_H
 #include "Color.h"
 #include <stddef.h>
-#include <thread>
-#include <mutex>
+#include "threading.h"
 #include <vector>
 
 class DisplayRenderer

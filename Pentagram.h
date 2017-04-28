@@ -8,6 +8,7 @@ public:
     Pentagram();
     Pentagram(int r, int x, int y, double rotation = 0);
     virtual void render(std::vector<Color>& pixmap, int width, int height) const override;
+    virtual void renderAntialiased(std::vector<Color>& pixmap, int width, int height) const override;
     virtual Shape* cloneNew() const override;
 
     int r;
