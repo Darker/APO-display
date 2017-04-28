@@ -18,8 +18,8 @@ int mainQt(int argc, char *argv[]) {
     QApplication a(argc, argv);
     MainWindow* w = new MainWindow();
     w->show();
-    Game* game = nullptr;
-#ifdef _JAKUB
+    GameInterface* game = nullptr;
+#ifdef _JAKUBX
     game = new GameJakub();
 #else
     game = new Game();
@@ -48,22 +48,30 @@ int mainQt(int argc, char *argv[]) {
     });
     gameLoop.start(10);
 
-    if(GameJakub* testGame = dynamic_cast<GameJakub*>(game)) {
-        QObject::connect(w, &MainWindow::buttonMoved, [testGame](const int index, const qint16 offset) {
-            switch(index) {
-            case 0: testGame->button1.addMovement(offset);break;
-            case 1: testGame->button2.addMovement(offset);break;
-            case 2: testGame->button3.addMovement(offset);break;
-            }
-        });
-        QObject::connect(w, &MainWindow::buttonMoved, [testGame](const int index) {
-            switch(index) {
-            case 0: testGame->button1.clicked();break;
-            case 1: testGame->button2.clicked();break;
-            case 2: testGame->button3.clicked();break;
-            }
-        });
-    }
+    //if(GameJakub* testGame = dynamic_cast<GameJakub*>(game)) {
+    QObject::connect(w, &MainWindow::buttonMoved, [game](const int index, const qint16 offset) {
+        GameButton* button = nullptr;
+        switch(index) {
+        case 0: button = game->getButtonRED();break;
+        case 1: button = game->getButtonBLUE();break;
+        case 2: button = game->getButtonGREEN();break;
+        }
+        if(button!=nullptr) {
+            button->addMovement(offset);
+        }
+    });
+    QObject::connect(w, &MainWindow::buttonMoved, [game](const int index) {
+        GameButton* button = nullptr;
+        switch(index) {
+        case 0: button = game->getButtonRED();break;
+        case 1: button = game->getButtonBLUE();break;
+        case 2: button = game->getButtonGREEN();break;
+        }
+        if(button!=nullptr) {
+            button->clicked();
+        }
+    });
+    //}
 
     int returnValue = a.exec();
     delete game;

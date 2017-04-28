@@ -1,11 +1,11 @@
 #ifndef GAMEJAKUB_H
 #define GAMEJAKUB_H
-#include "Game.h"
+#include "GameInterface.h"
 #include "GameButton.h"
 #include "Pentagram.h"
 #include "ShapePixmap.h"
 #include "threading.h"
-class GameJakub : public Game
+class GameJakub : public GameInterface
 {
 public:
     GameJakub();
@@ -17,12 +17,18 @@ public:
     GameButton button1;
     GameButton button2;
     GameButton button3;
+
+    virtual GameButton* getButtonRED() override {return &button1;}
+    virtual GameButton* getButtonBLUE() override {return &button2;}
+    virtual GameButton* getButtonGREEN() override {return &button3;}
 protected:
     Pentagram circle;
     ShapePixmap paintArea;
     std::mutex shapeMutex;
     double drawX;
     double drawY;
+
+
 };
 
 #endif // GAMEJAKUB_H

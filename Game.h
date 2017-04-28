@@ -3,13 +3,14 @@
 class Shape;
 class Pentagram;
 #include <vector>
-#include <chrono>
-#include <stdint.h>
+
 #include "Circle.h"
+#include "Platform.h"
 
 #include "Pentagram.h"
+#include "GameInterface.h"
 
-class Game
+class Game: public GameInterface
 {
 public:
     Game();
@@ -25,15 +26,10 @@ protected:
     // Mutex for copying shapes
         // TODO later
 
-    // This measures time per tick
-    // Important to ensure game speed doesn't change
-    // when CPU slows down or speeds up
-    uint32_t sinceLastTick();
-    std::chrono::steady_clock::time_point lastTick;
-    bool firstTick;
-
     // Some testing garbage
     Circle circle;
+    Platform platform1;
+    Platform platform2;
 };
 
 #endif // GAME_H

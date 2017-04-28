@@ -4,7 +4,8 @@
 #include "defines.h"
 Game::Game()
     : circle(GAME_WIDTH/2,GAME_HEIGHT/2,10)
-    , firstTick(true)
+    , platform1(150,15)
+    , platform2(150,15)
 {
 
 }
@@ -20,6 +21,8 @@ std::vector<Shape*> Game::getShapes()
     // LOCK MUTEX!
     // copy every shape into new array and return that array
     returnArray.push_back(circle.cloneNew());
+    returnArray.push_back(platform1.cloneNew());
+    returnArray.push_back(platform2.cloneNew());
     return returnArray;
 }
 
@@ -31,20 +34,9 @@ void Game::tick()
     const double rotations_per_second = 0.05;
 
    //pentac.rotation += rotations_per_second*deltaT*2.0*GAME_PI;
+
+
    //movement of circle
     circle.x+=deltaT*1;
     circle.y+=deltaT*1;
-}
-
-uint32_t Game::sinceLastTick()
-{
-
-    const std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
-    uint32_t duration = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastTick).count();
-    lastTick = now;
-    if(firstTick){
-        firstTick=false;
-        return 0;
-    }
-    return duration;
 }

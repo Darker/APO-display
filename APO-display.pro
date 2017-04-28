@@ -26,8 +26,8 @@ QMAKE_CXXFLAGS += -Wunused-parameter
 
 
 SOURCES += \
-        main.cpp \
-       Color.cpp \
+    main.cpp \
+    Color.cpp \
     Game.cpp \
     Shape.cpp \
     ShapeRendering.cpp \
@@ -40,16 +40,15 @@ SOURCES += \
     qt_stuff/PaintWidget.cpp \
     qt_stuff/Plotter.cpp \
     Circle.cpp \
-    Base.cpp \
+    Platform.cpp \
     GameJakub.cpp \
     GameButton.cpp \
     qt_stuff/SpinnerButton.cpp \
     ShapeRenderingAntialiased.cpp \
     UDPInterface.cpp \
     ShapePixmap.cpp \
-    oldshit/display.cpp \
-    PPMReader.cpp
-    GameButton.cpp
+    PPMReader.cpp \
+    GameInterface.cpp
 
 HEADERS += \
     Color.h \
@@ -66,7 +65,7 @@ HEADERS += \
     qt_stuff/Plotter.h \
     qt_stuff/QtVirtualDisplay.h \
     Circle.h \
-    Base.h \
+    Platform.h \
     GameJakub.h \
     GameButton.h \
     qt_stuff/SpinnerButton.h \
@@ -77,8 +76,8 @@ HEADERS += \
     libs/mingw.thread.h \
     libs/stb_image.h \
     libs/stb_truetype.h \
-    PPMReader.h
-    GameButton.h
+    PPMReader.h \
+    GameInterface.h
 
 FORMS += qt_stuff/MainWindow.ui \
     qt_stuff/SpinnerButton.ui
