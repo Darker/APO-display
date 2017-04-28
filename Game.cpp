@@ -37,6 +37,14 @@ void Game::tick()
 
 
    //movement of circle
-    circle.x+=deltaT*1;
-    circle.y+=deltaT*1;
+    circle.x+=deltaT*5;
+    circle.y+=deltaT*5;
+
+    //just trying to make it bounce, dj hit the decks
+
+    if(circle.x>GAME_WIDTH || circle.x<0 || circle.y>GAME_HEIGHT || circle.y<0){
+        //why does just stop? cant't you move ?
+        circle.x-=deltaT*5;
+        circle.y-=deltaT*5;
+    }
 }
