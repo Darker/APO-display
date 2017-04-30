@@ -48,7 +48,10 @@ SOURCES += \
     UDPInterface.cpp \
     ShapePixmap.cpp \
     PPMReader.cpp \
-    GameInterface.cpp
+    GameInterface.cpp \
+    WaitMutex.cpp \
+    Rectangle.cpp \
+    qt_stuff/mainQtWithLinuxRendering.cpp
 
 HEADERS += \
     Color.h \
@@ -77,7 +80,9 @@ HEADERS += \
     libs/stb_image.h \
     libs/stb_truetype.h \
     PPMReader.h \
-    GameInterface.h
+    GameInterface.h \
+    WaitMutex.h \
+    Rectangle.h
 
 FORMS += qt_stuff/MainWindow.ui \
     qt_stuff/SpinnerButton.ui

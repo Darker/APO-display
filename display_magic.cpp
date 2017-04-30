@@ -30,23 +30,33 @@ QtVirtualDisplayPrivate::QtVirtualDisplayPrivate()
     , app(nullptr)
     , window(nullptr)
     , pixelIndex(0)
+    , isInicialized(false)
 {
-    this->moveToThread(&mainThread);
-    QObject::connect(&mainThread, &QThread::started, this, &QtVirtualDisplayPrivate::guiThread);
-    initLock.lock();
-    mainThread.start();
-    initLock.lock();
+    if(qApp != nullptr) {
+        app = qApp;
+        mainThread = app->thread();
+        this->moveToThread(mainThread);
+        app->postEvent(this, new QtVirtualDisplayPrivate::InitEvent);
+
+        while(true) {
+            initMutex.lock();
+            bool isInited = isInicialized;
+            initMutex.unlock();
+            if(isInited)
+                break;
+            else
+                QThread::currentThread()->sleep(5);
+        }
+    }
+
+    //QObject::connect(&mainThread, &QThread::started, this, &QtVirtualDisplayPrivate::guiThread);
 }
 
 void QtVirtualDisplayPrivate::guiThread()
 {
-    int argc = 0;
-    char* argv[] = {""};
-    app = new QApplication(argc,  argv);
-    //app = qApp;
-    app->moveToThread(&mainThread);
     window = new MainWindow();
     QObject::connect(this, &QtVirtualDisplayPrivate::setPixel, window->getPlotter(),&Plotter::setPixel, Qt::QueuedConnection);
+    QObject::connect(this, &QtVirtualDisplayPrivate::setPixels, window->getPlotter(),&Plotter::setPixels, Qt::QueuedConnection);
     QObject::connect(this, &QtVirtualDisplayPrivate::plot, window->getPlotter(), &Plotter::plot, Qt::QueuedConnection);
     Plotter* plotterPtr = window->getPlotter();
     QTimer::singleShot(0, plotterPtr, [plotterPtr]() {
@@ -55,30 +65,48 @@ void QtVirtualDisplayPrivate::guiThread()
         plotterPtr->update(empty);
     });
     window->show();
-    initLock.unlock();
-    //while(true)
-    //    app->processEvents(QEventLoop::AllEvents, 1000);
-    QApplication::exec();
+    initMutex.lock();
+    isInicialized = true;
+    initMutex.unlock();
 }
 void QtVirtualDisplayPrivate::setNextPixel(uint16_t color) {
-    emit setPixel(pixelIndex%GAME_WIDTH, pixelIndex/(int)GAME_WIDTH, color);
-    pixelIndex++;
-    if(pixelIndex>=GAME_WIDTH*GAME_HEIGHT) {
-        emit plot();
-        pixelIndex = 0;
+    pixels.push_back(color);
+    if(pixels.size()>=COLORS_TO_BUFFER) {
+        qApp->postEvent(this, new QtVirtualDisplayPrivate::PixelEvent(pixels));
+        pixels.reserve(COLORS_TO_BUFFER);
+        pixels.clear();
+        pixels.reserve(COLORS_TO_BUFFER);
     }
 }
 
 QtVirtualDisplayPrivate::~QtVirtualDisplayPrivate() {
     delete window;
-    mainThread.terminate();
 }
 
+bool QtVirtualDisplayPrivate::event(QEvent* e)
+{
+    if(e->type() == (QEvent::Type::User+666) && dynamic_cast<QtVirtualDisplayPrivate::InitEvent*>(e)!=nullptr) {
+        guiThread();
+        e->accept();
+    }
+    else if(e->type() == (QEvent::Type::User+667)) {
+        if(PixelEvent* pxe = dynamic_cast<PixelEvent*>(e)) {
 
+            emit setPixels(pixelIndex, pxe->data);
+            pixelIndex+=pxe->data.size()+1;
 
+            if(pixelIndex>=GAME_WIDTH*GAME_HEIGHT) {
+                //emit plot();
+                pixelIndex = 0;
+            }
+            pxe->accept();
+        }
+    }
+}
 
 void *map_phys_address(off_t region_base, size_t region_size, int opt_cached) {
     return new QtVirtualDisplayPrivate();
+    //return nullptr;
 }
 void parlcd_write_cmd(unsigned char *parlcd_mem_base, uint16_t cmd) {
 
@@ -88,7 +116,14 @@ void parlcd_write_data(unsigned char *parlcd_mem_base, uint16_t data) {
         virtualDisplay->setNextPixel(data);
     }
 }
-void parlcd_write_data2x(unsigned char *parlcd_mem_base, uint32_t data) {}
+void parlcd_write_data2x(unsigned char *parlcd_mem_base, uint32_t data) {
+    if(QtVirtualDisplayPrivate* virtualDisplay = static_cast<QtVirtualDisplayPrivate*>((void*)parlcd_mem_base)) {
+        uint16_t c1 = data>>16;
+        uint16_t c2 = data&0xFFFF;
+        virtualDisplay->setNextPixel(c1);
+        virtualDisplay->setNextPixel(c2);
+    }
+}
 void parlcd_delay(int msec) {
     QThread::currentThread()->sleep(msec);
 }

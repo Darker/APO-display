@@ -6,26 +6,25 @@
 
 DisplayRenderer::DisplayRenderer()
     : pixmapChanged(true)
+    , started(false)
 {
 
 }
 
 void DisplayRenderer::updatePixmap(const std::vector<Color>& newPixmap)
 {
-    /*if(pixmapLock.try_lock()) {
-        pixmap = newPixmap;
-        pixmapChanged = true;
-    }*/
-    pixmapLock.lock();
+    std::unique_lock<std::mutex> lk{pixmapLock};
     pixmap = newPixmap;
     pixmapChanged = true;
-    pixmapLock.unlock();
+    //frameWait.unlock();
 }
 
 void DisplayRenderer::start()
 {
-    if(startLock.try_lock()) {
+    std::unique_lock<std::mutex> lck(startLock);
+    if(!started) {
         backgroundThread = std::thread(&DisplayRenderer::renderLoop, this);
+        started = true;
     }
 }
 
@@ -49,13 +48,11 @@ void DisplayRenderer::renderLoop()
     while(true) {
         const std::chrono::steady_clock::time_point render_start = std::chrono::steady_clock::now();
         iterator = 0;
-        pixmapLock.lock();
-        if(pixmapChanged) {
-            updatePixmapCache();
-            pixmapLock.unlock();
-        }
-        else {
-            pixmapLock.unlock();
+        {
+            std::unique_lock<std::mutex> lck(startLock);
+            if(pixmapChanged) {
+                updatePixmapCache();
+            }
         }
 
         const uint32_t maxIter = pixmapCache.size();
@@ -64,20 +61,23 @@ void DisplayRenderer::renderLoop()
             //parlcd_write_data(parlcd_mem_base, (uint16_t)pixmapCache[iterator++]);
             parlcd_write_data2x(parlcd_mem_base, pixmapCache[iterator]);
         }
-        for (; iterator+1<colors; iterator+=2) {
-            //parlcd_write_data(parlcd_mem_base, (uint16_t)pixmapCache[iterator++]);
-            parlcd_write_data2x(parlcd_mem_base, (uint32_t)0);
+        for (; iterator+1<colors; iterator+=1) {
+            parlcd_write_data(parlcd_mem_base, (uint16_t)0);
         }
         uint32_t renderDuration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - render_start).count();
         // if we didn't waste all 33 ms rendering, we can take a break now
         if(renderDuration<minInterval) {
             const uint32_t restSleep = minInterval-renderDuration;
-            std::cout<<"Rendering took "<<renderDuration<<" milliseconds. Sleeping for another "<<restSleep<<" ms\n";
-            std::this_thread::sleep_for(std::chrono::milliseconds(minInterval-renderDuration));
+            //std::cout<<"Rendering took "<<renderDuration<<" milliseconds. Sleeping for another "<<restSleep<<" ms\n";
+            //std::this_thread::sleep_for(std::chrono::milliseconds(minInterval-renderDuration));
         }
         else {
             std::cout<<"FPS WARNING: Rendering took "<<renderDuration<<" milliseconds!\n";
         }
+        // If should wait for next frame
+        //std::cout<<"Waiting for next frame.\n";
+        //frameWait.wait();
+        //std::cout<<"Next frame done.\n";
     }
 }
 

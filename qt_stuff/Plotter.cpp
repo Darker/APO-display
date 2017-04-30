@@ -6,10 +6,11 @@
 #include <Color.h>
 #include <QtMath>
 #include <cstdlib>
-
+#include "defines.h"
 Plotter::Plotter(QSize size, QObject* parent)
     : QObject(parent)
     , size(size)
+    , data(GAME_WIDTH*GAME_HEIGHT)
 {
 
 }
@@ -87,4 +88,17 @@ void Plotter::setPixel(quint32 x, quint32 y, Color color)
     quint32 offset = x+size.width()*x;
     if(offset<data.size())
         data[offset] = color;
+}
+
+void Plotter::setPixels(quint32 start, std::vector<uint16_t> pixels)
+{
+    for(size_t i=0, l=pixels.size(); i<l; ++i) {
+        if(start>=data.size()) {
+            start = 0;
+            plot();
+        }
+        data[start] = pixels[i];
+        start++;
+    }
+
 }

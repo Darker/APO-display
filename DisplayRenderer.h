@@ -2,7 +2,8 @@
 #define DISPLAYRENDERER_H
 #include "Color.h"
 #include <stddef.h>
-#include "threading.h"
+#include "WaitMutex.h"
+
 #include <vector>
 
 class DisplayRenderer
@@ -29,6 +30,8 @@ protected:
     bool pixmapChanged;
 
     std::mutex startLock;
+    bool started;
+    WaitMutex frameWait;
     std::mutex pixmapLock;
     std::thread backgroundThread;
 };
