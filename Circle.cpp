@@ -8,16 +8,18 @@ Circle::Circle() : Shape()
 
 }
 
-Circle::Circle(double x,double y,int radius) : Shape()
+Circle::Circle(double x, double y, double vx, double vy, int radius) : Shape()
 ,x(x)
 ,y(y)
 ,radius(radius)
+,vx(vx)
+,vy(vy)
 {}
-void Circle::move(double vx, double vy, double time){
+void Circle::move(double time){
 
-    if(x==GAME_WIDTH || x==0 || y==GAME_HEIGHT || y==0){
-        vx=-vx;
-        vy=-vy;
+    if(x>=GAME_WIDTH || x<=0 || y>=GAME_HEIGHT || y<=0){
+        vx=vx*(-1);
+        vy=vy*(-1);
     }
 
     x+=vx*time;

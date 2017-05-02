@@ -3,7 +3,7 @@
 
 #include "defines.h"
 Game::Game()
-    : circle(GAME_WIDTH/2,GAME_HEIGHT/2,10)
+    : circle(GAME_WIDTH/2,GAME_HEIGHT/2,15,5,10)
     , platform1(150,15,2,80)
     , platform2(150,15,-40,80)
 {
@@ -40,7 +40,7 @@ void Game::tick()
     //just trying to make it bounce, dj hit the decks
     //if I change if into while whole thing crashes
 
-    circle.move(15,5,deltaT);
+    circle.move(deltaT);
 
 
 

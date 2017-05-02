@@ -7,11 +7,13 @@ class Circle : public Shape
 public:
     Circle();
 
-    Circle(double x,double y,int radius );
+    Circle(double x,double y, double vx, double vy, int radius );
     //properties
 
     double x; //x pos of center
     double y; //y pos of center
+    double vx;
+    double vy;
     int radius;
 
 
@@ -21,7 +23,7 @@ public:
 public:
     void render(std::vector<Color> &pixmap, int width, int height) const;
     Shape *cloneNew() const;
-    void move(double vx, double vy, double time);
+    void move(double time);
 };
 
 #endif // CIRCLE_H
