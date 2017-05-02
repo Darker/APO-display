@@ -37,19 +37,12 @@ void Game::tick()
 
 
 
-    circle.x+=deltaT*5;
-    circle.y+=deltaT*5;
-
     //just trying to make it bounce, dj hit the decks
     //if I change if into while whole thing crashes
-    if(circle.x>GAME_WIDTH || circle.x<0 || circle.y>GAME_HEIGHT || circle.y<0){
-        //why does just stop? cant't you move ?
+
+    circle.move(15,5,deltaT);
 
 
-        circle.x-=deltaT*5;
-        circle.y-=deltaT*5;
-
-    }
 
 
 }

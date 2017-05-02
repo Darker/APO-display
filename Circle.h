@@ -15,10 +15,13 @@ public:
     int radius;
 
 
+
+
     // Shape interface
 public:
     void render(std::vector<Color> &pixmap, int width, int height) const;
     Shape *cloneNew() const;
+    void move(double vx, double vy, double time);
 };
 
 #endif // CIRCLE_H
