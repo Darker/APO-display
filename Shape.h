@@ -11,8 +11,8 @@ class Shape
 {
 public:
 
-    virtual void render(std::vector<Color>& pixmap, int width, int height) const = 0;
-    virtual void renderAntialiased(std::vector<Color>& pixmap, int width, int height) const {render(pixmap, width, height);}
+    virtual void render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHeight) const = 0;
+    virtual void renderAntialiased(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHeight) const {render(pixmap, pixmapWidth, pixmapHeight);}
     virtual Shape* cloneNew() const = 0;
 
     Shape();

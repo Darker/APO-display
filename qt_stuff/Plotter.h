@@ -18,6 +18,7 @@ public slots:
     //void plotRange(quint32 start, quint32 end);
     void update(const std::vector<Color>& data);
     void setPixel(quint32 x, quint32 y, Color color);
+    void setPixels(quint32 start, std::vector<uint16_t> pixels);
 
 private:
     /*inline QPointF map(double x, double y) {

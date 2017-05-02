@@ -7,9 +7,9 @@ const Color Color::YELLOW(255,255,0);
 
 
 Color::Color(const uint16_t rgb565) 
-    : r((rgb565&RED)>>11)
-    , g((rgb565&GREEN)>>6)
-    , b(rgb565&BLUE) {}
+    : r((((rgb565&RED)>>11)*255)/31)
+    , g((((rgb565&GREEN)>>6)*255)/63)
+    , b(((rgb565&BLUE)*255)/31) {}
 Color::Color(const uint8_t r, const uint8_t g, const uint8_t b) 
     : r(r)
     , g(g)
