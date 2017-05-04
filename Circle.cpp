@@ -14,11 +14,16 @@ Circle::Circle(double x, double y, double vx, double vy, int radius) : Shape()
 ,radius(radius)
 ,vx(vx)
 ,vy(vy)
+,angle(vy/vx)
 {}
 void Circle::move(double time){
 
-    if(x>=GAME_WIDTH || x<=0 || y>=GAME_HEIGHT || y<=0){
+    if(x>=GAME_WIDTH || x<=0 ){
         vx=vx*(-1);
+
+    }
+
+    if(y>=GAME_HEIGHT || y<=0){
         vy=vy*(-1);
     }
 
