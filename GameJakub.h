@@ -27,12 +27,28 @@ protected:
     ShapePixmap paintArea;
     ShapeCar car;
     std::vector<Rectangle> obstructions;
+
+    Rectangle testRect;
     std::mutex shapeMutex;
     double drawX;
     double drawY;
 
     std::random_device rd;
     std::mt19937 mt;
+
+    // variables related to the car game
+    // how many shapes/s appear
+    double shapesPerSec;
+    // Game speed multiplier
+    double speed;
+
+    // How many shapes need to be generated
+    // this increments with delta time
+    // times shapes per second and
+    // when reaches value over 1, the
+    // ammount of shapes is generated
+    double shapesToGenerate;
+
 };
 
 #endif // GAMEJAKUB_H

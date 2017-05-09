@@ -11,6 +11,10 @@ GameJakub::GameJakub()
     , drawY(GAME_HEIGHT/2.0)
     , car(ShapeCar::TRUNK_LENGTH/2.0+1, GAME_HEIGHT/2, Color(0,100,255))
     , mt(rd())
+    , testRect(GAME_WIDTH-20,GAME_HEIGHT-20,20, 20)
+    , shapesPerSec(5)
+    , speed(1)
+    , shapesToGenerate(1)
 {
 
 }
@@ -19,13 +23,14 @@ std::vector<Shape*> GameJakub::getShapes()
 {
     std::vector<Shape*> result;
     shapeMutex.lock();
-//    result.push_back(paintArea.cloneNew());
-//    result.push_back(circle.cloneNew());
+    //result.push_back(paintArea.cloneNew());
+    //result.push_back(circle.cloneNew());
     //result.push_back(new Rectangle(0,0,GAME_WIDTH, 40));
     result.push_back(car.cloneNew());
     for(size_t i=0, l=obstructions.size(); i<l; ++i) {
         result.push_back(obstructions[i].cloneNew());
     }
+    //result.push_back(testRect.cloneNew());
     shapeMutex.unlock();
     return result;
 }
@@ -33,6 +38,9 @@ std::vector<Shape*> GameJakub::getShapes()
 void GameJakub::tick()
 {
     const double deltaT = sinceLastTick()/1000.0;
+    shapeMutex.lock();
+    //testRect.x += deltaT*5;
+    //testRect.y += deltaT*5;
     /*circle.x += button1.moveDelta();
     circle.y += button3.moveDelta();
     circle.rotation += (button2.moveDelta()*GAME_PI*2)/256.0;
@@ -48,30 +56,42 @@ void GameJakub::tick()
 //        drawX = newDrawX;
 //        drawY = newDrawY;
 //    }
+    double cary = car.getCy() + button2.moveDelta();
+    static const double carBorder = ShapeCar::TRUNK_WIDTH+ShapeCar::WHEEL_WIDTH;
 
-    if(obstructions.size()<15) {
-        std::uniform_real_distribution<double> decision(0.0, 1.0);
+    if(cary < carBorder)
+        cary = carBorder;
+    else if(cary > GAME_HEIGHT-carBorder)
+        cary = GAME_HEIGHT-carBorder;
+    car.setCy(cary);
+
+    shapesPerSec += deltaT/100.0;
+    speed += deltaT/15.0;
+    shapesToGenerate += shapesPerSec*deltaT;
+
+    while(shapesToGenerate>=1) {
         std::uniform_real_distribution<double> position(0.0, GAME_HEIGHT);
         std::uniform_real_distribution<double> dimensions(5.0, 20.0);
 
-        double d = decision(mt);
-        if(d>0.9) {
-            Rectangle r(GAME_WIDTH, position(mt), dimensions(mt), dimensions(mt));
-            r.color = Color(255,0,0);
-            obstructions.push_back(r);
-        }
+        Rectangle r(GAME_WIDTH-10, position(mt), dimensions(mt), dimensions(mt));
+        r.color = Color(255,0,0);
+        obstructions.push_back(r);
+
+        shapesToGenerate--;
     }
 
     for(size_t i=0, l=obstructions.size(); i<l; ++i) {
         if(car.intersects(obstructions[i])) {
-            std::cout<<"Yous uck idiot.\n";
-            return;
+            std::cout<<"You suck idiot.\n";
+            exit(1);
         }
-        obstructions[i].x -= deltaT*10;
+        obstructions[i].x -= deltaT*15*speed;
         if((obstructions[i].x+obstructions[i].width) < 0) {
             obstructions.erase(obstructions.begin() + i);
             i--;
             l--;
         }
     }
+
+    shapeMutex.unlock();
 }
