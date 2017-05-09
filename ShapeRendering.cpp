@@ -176,7 +176,7 @@ void rectangle(std::vector<Color>& pixmap, const Color& color, const int w, cons
     int lines = 0;
 
     for(; tg_offset<tg_end && lines<h; tg_offset+=pixmapWidth) {
-        for(int cx=x; cx<renderWidth; ++cx) {
+        for(int cx=0; cx<renderWidth; ++cx) {
             pixmap[tg_offset+cx] = color;
         }
         lines++;
