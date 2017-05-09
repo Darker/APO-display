@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -51,7 +51,8 @@ SOURCES += \
     GameInterface.cpp \
     WaitMutex.cpp \
     Rectangle.cpp \
-    qt_stuff/mainQtWithLinuxRendering.cpp
+    qt_stuff/mainQtWithLinuxRendering.cpp \
+    qt_stuff/QtUDP.cpp
 
 HEADERS += \
     Color.h \
@@ -82,7 +83,8 @@ HEADERS += \
     PPMReader.h \
     GameInterface.h \
     WaitMutex.h \
-    Rectangle.h
+    Rectangle.h \
+    qt_stuff/QtUDP.h
 
 FORMS += qt_stuff/MainWindow.ui \
     qt_stuff/SpinnerButton.ui

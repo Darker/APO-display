@@ -3,6 +3,8 @@
 
 #include <string>
 #include <stdint.h>
+#include <vector>
+#include "WaitMutex.h"
 class UDPInterface
 {
 public:
@@ -22,18 +24,40 @@ public:
             return isValid();
         }
     };
-//    class Datagram {
-//        Datagram()
+    class Datagram {
+        Datagram(const char* d, const Address& a) : data(d), address(a) {}
+        const char* data;
+        const Address address;
+    };
+    // creates IO thread for this socket
+    virtual void startIOThread();
 
-//        const unsigned char* data;
-//        const bool isChecked;
-//        const int repeatTimeout;
-//        const int repeatCount;
-//        int attampts;
-//    };
+    bool bind(const Address&) = 0;
+    // This function is thread safe
+    // datagram will be put to queue and sent asap
+    void sendDatagram(const unsigned char*, const Address&);
+    // This function isn't thread safe
+    // datagram will be sent immediatelly using underlying socket
+    // implementation
+    //returns number of bytes written
+    virtual int sendDatagramNow(const Datagram& d) = 0;
+    // returns true if there are datagrams to be read
+    virtual bool hasDatagrams() const = 0;
+    // reads all incoming datagrams into given array
+    virtual void readInputDatagrams(std::vector<Datagram>& input) = 0;
 
-    bool bind(const Address&);
-    int sendDatagram();
+    virtual ~UDPInterface(){}
+protected:
+    // thread which sends and receives data
+    virtual void datagramLoop();
+    // All datagrams to be sent
+    std::vector<Datagram> sendingDatagrams;
+    std::vector<Datagram> receivedDatagrams;
+    std::mutex dataMutex;
+    // sleep until data is to be sent or is received
+    // must be awoken using underlying impleentation
+    // when datagram is received
+    WaitMutex waitForData;
 };
 
 #endif // UDPINTERFACE_H
