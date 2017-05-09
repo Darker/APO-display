@@ -4,6 +4,7 @@
 #include "GameButton.h"
 #include "Pentagram.h"
 #include "ShapePixmap.h"
+#include "ShapeCar.h"
 #include "threading.h"
 class GameJakub : public GameInterface
 {
@@ -24,11 +25,14 @@ public:
 protected:
     Pentagram circle;
     ShapePixmap paintArea;
+    ShapeCar car;
+    std::vector<Rectangle> obstructions;
     std::mutex shapeMutex;
     double drawX;
     double drawY;
 
-
+    std::random_device rd;
+    std::mt19937 mt;
 };
 
 #endif // GAMEJAKUB_H

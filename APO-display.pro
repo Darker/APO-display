@@ -52,7 +52,8 @@ SOURCES += \
     WaitMutex.cpp \
     Rectangle.cpp \
     qt_stuff/mainQtWithLinuxRendering.cpp \
-    qt_stuff/QtUDP.cpp
+    qt_stuff/QtUDP.cpp \
+    ShapeCar.cpp
 
 HEADERS += \
     Color.h \
@@ -84,7 +85,8 @@ HEADERS += \
     GameInterface.h \
     WaitMutex.h \
     Rectangle.h \
-    qt_stuff/QtUDP.h
+    qt_stuff/QtUDP.h \
+    ShapeCar.h
 
 FORMS += qt_stuff/MainWindow.ui \
     qt_stuff/SpinnerButton.ui

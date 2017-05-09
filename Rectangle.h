@@ -15,6 +15,8 @@ public:
 
     virtual void render(std::vector<Color>& pixmap, int width, int height) const override;
     virtual Shape* cloneNew() const override;
+
+    virtual bool intersects(const Rectangle& other);
 };
 
 #endif // RECTANGLE_H

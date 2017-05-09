@@ -31,3 +31,9 @@ Shape* Rectangle::cloneNew() const
 {
     return new Rectangle(*this);
 }
+
+bool Rectangle::intersects(const Rectangle& other)
+{
+    return (x < (other.x+other.width))  && (x+width > (other.x)) &&
+           (y < (other.y+other.height)) && (y+height >(other.y));
+}

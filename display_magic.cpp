@@ -128,6 +128,8 @@ void parlcd_delay(int msec) {
     QThread::currentThread()->sleep(msec);
 }
 void parlcd_hx8357_init(unsigned char *parlcd_mem_base) {}
+
+parlcd_KnobValues parlcd_knob_values(unsigned char *parlcd_mem_base) {}
 #elif defined(__MINGW32__)
 void *map_phys_address(off_t region_base, size_t region_size, int opt_cached) {
 

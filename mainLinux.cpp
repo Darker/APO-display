@@ -78,7 +78,7 @@ void readInput() {
     // wait for display init
     //std::cout<<"Waiting for display init!\n";
     //renderer.waitForPalcdInit.wait();
-    unsigned char* button_mem_base = map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
+    unsigned char* button_mem_base = (unsigned char*)map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
     int reddeltasum = 0;
     //std::cout<<"Waiting for display done, pointer: "<<std::hex<<(uint32_t)parlcd_mem_base<<"\n";
     while(true) {

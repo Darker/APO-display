@@ -3,11 +3,14 @@
 #include "defines.h"
 #include "ShapeRendering.h"
 #include "Rectangle.h"
+#include <iostream>
 GameJakub::GameJakub()
     : circle(80, GAME_WIDTH/2.0, GAME_HEIGHT/2.0)
     , paintArea(GAME_WIDTH, GAME_HEIGHT, 0, 0)
     , drawX(GAME_WIDTH/2.0)
     , drawY(GAME_HEIGHT/2.0)
+    , car(ShapeCar::TRUNK_LENGTH/2.0+1, GAME_HEIGHT/2, Color(0,100,255))
+    , mt(rd())
 {
 
 }
@@ -16,9 +19,13 @@ std::vector<Shape*> GameJakub::getShapes()
 {
     std::vector<Shape*> result;
     shapeMutex.lock();
-    result.push_back(paintArea.cloneNew());
-    result.push_back(circle.cloneNew());
+//    result.push_back(paintArea.cloneNew());
+//    result.push_back(circle.cloneNew());
     //result.push_back(new Rectangle(0,0,GAME_WIDTH, 40));
+    result.push_back(car.cloneNew());
+    for(size_t i=0, l=obstructions.size(); i<l; ++i) {
+        result.push_back(obstructions[i].cloneNew());
+    }
     shapeMutex.unlock();
     return result;
 }
@@ -31,14 +38,40 @@ void GameJakub::tick()
     circle.rotation += (button2.moveDelta()*GAME_PI*2)/256.0;
     if(circle.r<5)
         circle.r = 5;*/
-    circle.rotation += (button2.moveDelta()*GAME_PI*2.0)/100.0;;
-    circle.rotation += (deltaT)*GAME_PI/20.0;
+//    circle.rotation += (button2.moveDelta()*GAME_PI*2.0)/100.0;;
+//    circle.rotation += (deltaT)*GAME_PI/20.0;
 
-    double newDrawX = drawX + button1.moveDelta()/2.0;
-    double newDrawY = drawY + button3.moveDelta()/2.0;
-    if(newDrawX!=drawX || newDrawY!=drawY) {
-        line(paintArea.drawArea, Color::YELLOW, drawX, drawY, newDrawX, newDrawY, paintArea.width);
-        drawX = newDrawX;
-        drawY = newDrawY;
+//    double newDrawX = drawX + button1.moveDelta()/2.0;
+//    double newDrawY = drawY + button3.moveDelta()/2.0;
+//    if(newDrawX!=drawX || newDrawY!=drawY) {
+//        line(paintArea.drawArea, Color::YELLOW, drawX, drawY, newDrawX, newDrawY, paintArea.width);
+//        drawX = newDrawX;
+//        drawY = newDrawY;
+//    }
+
+    if(obstructions.size()<15) {
+        std::uniform_real_distribution<double> decision(0.0, 1.0);
+        std::uniform_real_distribution<double> position(0.0, GAME_HEIGHT);
+        std::uniform_real_distribution<double> dimensions(5.0, 20.0);
+
+        double d = decision(mt);
+        if(d>0.9) {
+            Rectangle r(GAME_WIDTH, position(mt), dimensions(mt), dimensions(mt));
+            r.color = Color(255,0,0);
+            obstructions.push_back(r);
+        }
+    }
+
+    for(size_t i=0, l=obstructions.size(); i<l; ++i) {
+        if(car.intersects(obstructions[i])) {
+            std::cout<<"Yous uck idiot.\n";
+            return;
+        }
+        obstructions[i].x -= deltaT*10;
+        if((obstructions[i].x+obstructions[i].width) < 0) {
+            obstructions.erase(obstructions.begin() + i);
+            i--;
+            l--;
+        }
     }
 }

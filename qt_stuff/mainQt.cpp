@@ -53,8 +53,8 @@ int mainQt(int argc, char *argv[]) {
         GameButton* button = nullptr;
         switch(index) {
         case 0: button = game->getButtonRED();break;
-        case 1: button = game->getButtonBLUE();break;
-        case 2: button = game->getButtonGREEN();break;
+        case 1: button = game->getButtonGREEN();break;
+        case 2: button = game->getButtonBLUE();break;
         }
         if(button!=nullptr) {
             button->addMovement(offset);
@@ -64,8 +64,8 @@ int mainQt(int argc, char *argv[]) {
         GameButton* button = nullptr;
         switch(index) {
         case 0: button = game->getButtonRED();break;
-        case 1: button = game->getButtonBLUE();break;
-        case 2: button = game->getButtonGREEN();break;
+        case 1: button = game->getButtonGREEN();break;
+        case 2: button = game->getButtonBLUE();break;
         }
         if(button!=nullptr) {
             button->clicked();
