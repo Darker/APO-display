@@ -10,7 +10,7 @@ Platform::Platform(double plength,double pwidth,double x, double y) :Shape()
 {}
 void Platform::render(std::vector<Color> &pixmap, int width, int height) const
 {
-    //line(pixmap,Color(0,255,0),10,20,(10+pwidth),(20 + plength),width);
+
     rectangle(pixmap, Color(0,255,0), pwidth, plength, x, y, width);
 }
 Shape *Platform::cloneNew() const

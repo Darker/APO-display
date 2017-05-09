@@ -3,9 +3,9 @@
 
 #include "defines.h"
 Game::Game()
-    : circle(GAME_WIDTH/2,GAME_HEIGHT/2,10)
+    : circle(GAME_WIDTH/2,GAME_HEIGHT/2,15,5,10)
     , platform1(150,15,2,80)
-    , platform2(150,15,-40,80)
+    , platform2(150,15,-40,40)
 {
 
 }
@@ -36,15 +36,13 @@ void Game::tick()
    //pentac.rotation += rotations_per_second*deltaT*2.0*GAME_PI;
 
 
-   //movement of circle
-    circle.x+=deltaT*5;
-    circle.y+=deltaT*5;
 
     //just trying to make it bounce, dj hit the decks
+    //if I change if into while whole thing crashes
 
-    if(circle.x>GAME_WIDTH || circle.x<0 || circle.y>GAME_HEIGHT || circle.y<0){
-        //why does just stop? cant't you move ?
-        circle.x-=deltaT*5;
-        circle.y-=deltaT*5;
-    }
+    circle.move(deltaT);
+
+
+
+
 }
