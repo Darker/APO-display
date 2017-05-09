@@ -25,17 +25,19 @@ public:
         }
     };
     class Datagram {
-        Datagram(const char* d, const Address& a) : data(d), address(a) {}
+    public:
+        Datagram(const char* d, const size_t l, const Address& a) : data(d), dataLen(l), address(a) {}
         const char* data;
+        const size_t dataLen;
         const Address address;
     };
     // creates IO thread for this socket
-    virtual void startIOThread();
+    virtual void startIOThread() = 0;
 
-    bool bind(const Address&) = 0;
+    virtual bool bind(const Address&) = 0;
     // This function is thread safe
     // datagram will be put to queue and sent asap
-    void sendDatagram(const unsigned char*, const Address&);
+    void sendDatagram(const unsigned char*, const size_t, const Address&);
     // This function isn't thread safe
     // datagram will be sent immediatelly using underlying socket
     // implementation

@@ -2,6 +2,7 @@
 #define QTUDP_H
 #include "../UDPInterface.h"
 #include <QUdpSocket>
+#include <QThread>
 class QtUDP: public UDPInterface
 {
 public:

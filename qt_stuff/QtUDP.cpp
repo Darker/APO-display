@@ -1,13 +1,13 @@
 #include "QtUDP.h"
+#include <QHostAddress>
+//QtUDP::QtUDP()
+//{
 
-QtUDP::QtUDP()
-{
-
-}
+//}
 
 int QtUDP::sendDatagramNow(const UDPInterface::Datagram& d)
 {
-    internalSocket.writeDatagram(d.data, d.address.address, d.address.port);
+    internalSocket.writeDatagram(d.data, d.dataLen, QHostAddress(QString::fromStdString(d.address.address)), d.address.port);
 }
 
 bool QtUDP::hasDatagrams() const

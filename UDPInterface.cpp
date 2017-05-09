@@ -5,9 +5,9 @@ UDPInterface::UDPInterface()
 
 }
 
-void UDPInterface::sendDatagram(const unsigned char* d, const UDPInterface::Address& a)
+void UDPInterface::sendDatagram(const unsigned char* d, const size_t len, const UDPInterface::Address& a)
 {
-    sendingDatagrams.push_back(Datagram(d, a));
+    sendingDatagrams.push_back(Datagram((const char*)d, len, a));
 }
 
 void UDPInterface::datagramLoop()

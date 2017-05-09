@@ -18,7 +18,7 @@ std::vector<Shape*> GameJakub::getShapes()
     shapeMutex.lock();
     result.push_back(paintArea.cloneNew());
     result.push_back(circle.cloneNew());
-    result.push_back(new Rectangle(0,0,GAME_WIDTH, 40));
+    //result.push_back(new Rectangle(0,0,GAME_WIDTH, 40));
     shapeMutex.unlock();
     return result;
 }
@@ -31,8 +31,8 @@ void GameJakub::tick()
     circle.rotation += (button2.moveDelta()*GAME_PI*2)/256.0;
     if(circle.r<5)
         circle.r = 5;*/
-    //circle.rotation += (button2.moveDelta()*GAME_PI*2.0)/256.0;;
-    circle.rotation += (deltaT)*GAME_PI/2.0;
+    circle.rotation += (button2.moveDelta()*GAME_PI*2.0)/1000.0;;
+    //circle.rotation += (deltaT)*GAME_PI/2.0;
 
     double newDrawX = drawX + button1.moveDelta()/10.0;
     double newDrawY = drawY + button3.moveDelta()/10.0;
