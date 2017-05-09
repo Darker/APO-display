@@ -19,7 +19,7 @@ else
 endif
 
 #CC_FLAGS := ...
-CC_FLAGS := -fpermissive -std=c++0x -pedantic -Wall
+CC_FLAGS := -fpermissive -std=c++0x -pedantic -Wall -D_JAKUBX
 
 display: $(OBJ_FILES)
 	g++ $(LD_FLAGS) -o $@ $^

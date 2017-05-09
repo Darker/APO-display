@@ -29,4 +29,35 @@ void parlcd_delay(int msec);
 void parlcd_hx8357_init(unsigned char *parlcd_mem_base);
 
 
+class parlcd_KnobValues {
+  public:
+  // Example of knob values    R G B
+  //  int   16574668 uint 0x00fce8cc
+  //  Human readable: RGB 252 232 204
+  // First byte is apparently unused
+  
+  // Using the information above, we can see that we
+  // need to move bitmask to desired byte
+  // perform & operation and move the result back to 1st byte
+    parlcd_KnobValues(const uint32_t rawData) :
+        red  ((rawData&0x00FF0000)>>16)
+      , green((rawData&0x0000FF00)>>8)
+      , blue ((rawData&0x000000FF))
+    {}
+    parlcd_KnobValues() :
+        red(0)
+      , green(0)
+      , blue(0)
+    {}
+    parlcd_KnobValues(const uint8_t r, const uint8_t g, const uint8_t b) :
+        red(r)
+      , green(g)
+      , blue(b)
+    {}
+    uint8_t red;
+    uint8_t blue;
+    uint8_t green;
+};
+
+parlcd_KnobValues parlcd_knob_values(unsigned char *parlcd_mem_base);
 #endif // DISPLAY_MAGIC_H

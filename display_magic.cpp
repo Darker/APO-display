@@ -214,6 +214,14 @@ void parlcd_delay(int msec)
   clock_nanosleep(CLOCK_MONOTONIC, 0, &wait_delay, NULL);
 }
 
+
+parlcd_KnobValues parlcd_knob_values(unsigned char *parlcd_mem_base) {
+  const uint32_t rgb_knobs_value = *(volatile uint32_t*)(parlcd_mem_base + SPILED_REG_KNOBS_8BIT_o);
+  printf("int %10d uint 0x%08x\n", (int)rgb_knobs_value, (unsigned int)rgb_knobs_value);
+  return parlcd_KnobValues(rgb_knobs_value);
+}
+
+
 void parlcd_hx8357_init(unsigned char *parlcd_mem_base)
 {
   // toggle RST low to reset

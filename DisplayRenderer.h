@@ -17,6 +17,12 @@ public:
     // Starts the rendering thread
     // thread safe, can be called multiple times
     void start();
+
+    // pointer to mem interface
+    // this is dirty way to get access to the interface from the outside
+    // this exists because I didn't think it through in the beginning and am to lazy to refactor
+    WaitMutex waitForPalcdInit;
+    unsigned char* parlcd_mem_base;
 protected:
     // rendering in another thread
     void renderLoop();
@@ -34,6 +40,8 @@ protected:
     WaitMutex frameWait;
     std::mutex pixmapLock;
     std::thread backgroundThread;
+
+
 };
 
 #endif // DISPLAYRENDERER_H

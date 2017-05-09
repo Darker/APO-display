@@ -7,6 +7,7 @@
 DisplayRenderer::DisplayRenderer()
     : pixmapChanged(true)
     , started(false)
+    , parlcd_mem_base(nullptr)
 {
 
 }
@@ -30,7 +31,6 @@ void DisplayRenderer::start()
 
 void DisplayRenderer::renderLoop()
 {
-    unsigned char* parlcd_mem_base;
     parlcd_mem_base = (unsigned char*) map_phys_address(PARLCD_REG_BASE_PHYS, PARLCD_REG_SIZE, 0);
     // In QT mode, the pointer is not used so it doesn't matter if it's null
 #ifndef _QT_COMPILE
@@ -38,13 +38,15 @@ void DisplayRenderer::renderLoop()
         exit(1);
 #endif
     parlcd_hx8357_init(parlcd_mem_base);
+    //std::cout<<"Dsiplay initialized, pointer: "<<std::hex<<(uint32_t)parlcd_mem_base<<"\n";
+    waitForPalcdInit.unlock();
 
     parlcd_write_cmd(parlcd_mem_base, 0x2c);
     uint32_t iterator = 0;
 
 
     // 1000/30 - approx 30 fps as max fps
-    const int minInterval = 45;
+    const int minInterval = 33;
     while(true) {
         const std::chrono::steady_clock::time_point render_start = std::chrono::steady_clock::now();
         iterator = 0;
@@ -69,10 +71,10 @@ void DisplayRenderer::renderLoop()
         if(renderDuration<minInterval) {
             const uint32_t restSleep = minInterval-renderDuration;
             //std::cout<<"Rendering took "<<renderDuration<<" milliseconds. Sleeping for another "<<restSleep<<" ms\n";
-            //std::this_thread::sleep_for(std::chrono::milliseconds(minInterval-renderDuration));
+            std::this_thread::sleep_for(std::chrono::milliseconds(minInterval-renderDuration));
         }
         else {
-            std::cout<<"FPS WARNING: Rendering took "<<renderDuration<<" milliseconds!\n";
+            //std::cout<<"FPS WARNING: Rendering took "<<renderDuration<<" milliseconds!\n";
         }
         // If should wait for next frame
         //std::cout<<"Waiting for next frame.\n";
@@ -86,9 +88,9 @@ void DisplayRenderer::updatePixmapCache()
     if(pixmapChanged) {
         pixmapCache.resize(pixmap.size());
         for(size_t i=0, l=pixmap.size(); i+1<l; i+=2) {
-            uint32_t colors = pixmap[i];
+            uint32_t colors = pixmap[i+1];
             colors = colors<<16;
-            colors = colors | pixmap[i+1];
+            colors = colors | pixmap[i];
 
             pixmapCache[i] = colors;
         }

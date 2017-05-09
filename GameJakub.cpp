@@ -31,11 +31,11 @@ void GameJakub::tick()
     circle.rotation += (button2.moveDelta()*GAME_PI*2)/256.0;
     if(circle.r<5)
         circle.r = 5;*/
-    circle.rotation += (button2.moveDelta()*GAME_PI*2.0)/1000.0;;
-    //circle.rotation += (deltaT)*GAME_PI/2.0;
+    circle.rotation += (button2.moveDelta()*GAME_PI*2.0)/100.0;;
+    circle.rotation += (deltaT)*GAME_PI/20.0;
 
-    double newDrawX = drawX + button1.moveDelta()/10.0;
-    double newDrawY = drawY + button3.moveDelta()/10.0;
+    double newDrawX = drawX + button1.moveDelta()/2.0;
+    double newDrawY = drawY + button3.moveDelta()/2.0;
     if(newDrawX!=drawX || newDrawY!=drawY) {
         line(paintArea.drawArea, Color::YELLOW, drawX, drawY, newDrawX, newDrawY, paintArea.width);
         drawX = newDrawX;

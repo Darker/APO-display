@@ -19,8 +19,8 @@ public:
     GameButton button3;
 
     virtual GameButton* getButtonRED() override {return &button1;}
-    virtual GameButton* getButtonBLUE() override {return &button2;}
-    virtual GameButton* getButtonGREEN() override {return &button3;}
+    virtual GameButton* getButtonBLUE() override {return &button3;}
+    virtual GameButton* getButtonGREEN() override {return &button2;}
 protected:
     Pentagram circle;
     ShapePixmap paintArea;
