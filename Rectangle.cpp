@@ -1,5 +1,6 @@
 #include "Rectangle.h"
 #include "ShapeRendering.h"
+#include "Circle.h"
 Rectangle::Rectangle()
     : Shape()
     , color(255,0,0)
@@ -22,10 +23,13 @@ Rectangle::Rectangle(const double x, const double y, const double width, const d
 
 }
 
+
 void Rectangle::render(std::vector<Color>& pixmap, int width, int height) const
 {
     rectangle(pixmap, color, this->width, this->height, x, y, width);
 }
+
+
 
 Shape* Rectangle::cloneNew() const
 {
@@ -36,4 +40,12 @@ bool Rectangle::intersects(const Rectangle& other)
 {
     return (x < (other.x+other.width))  && (x+width > (other.x)) &&
            (y < (other.y+other.height)) && (y+height >(other.y));
+}
+
+bool Rectangle::intersects_ball(const Circle& other)
+{
+    if((other.x+other.radius)>=(x+width) || (other.x-other.radius)>=(x+width)){
+        return true;
+    }
+    return false;
 }

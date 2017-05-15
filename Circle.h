@@ -25,6 +25,9 @@ public:
     void render(std::vector<Color> &pixmap, int width, int height) const;
     Shape *cloneNew() const;
     void move(double time);
+    void bounce_ceiling();
+    void bounce_platform();
+
 };
 
 #endif // CIRCLE_H

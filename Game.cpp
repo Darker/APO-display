@@ -4,8 +4,8 @@
 #include "defines.h"
 Game::Game()
     : circle(GAME_WIDTH/2,GAME_HEIGHT/2,15,5,10)
-    , platform1(150,15,2,80)
-    , platform2(150,15,-40,40)
+    , platform1(150,15,GAME_WIDTH-10,80)
+    , platform2(150,15,0,40)
 {
 
 }
@@ -42,6 +42,13 @@ void Game::tick()
 
     circle.move(deltaT);
 
+    if(platform1.intersects_ball(circle)){
+        circle.bounce_platform();
+    }
+
+    if(platform2.intersects_ball(circle)){
+        circle.bounce_platform();
+    }
 
 
 

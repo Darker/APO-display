@@ -2,6 +2,8 @@
 #define RECTANGLE_H
 #include "Shape.h"
 #include "Color.h"
+#include "Circle.h"
+
 class Rectangle : public Shape
 {
 public:
@@ -17,6 +19,7 @@ public:
     virtual Shape* cloneNew() const override;
 
     virtual bool intersects(const Rectangle& other);
+    virtual bool intersects_ball(const Circle& other);
 };
 
 #endif // RECTANGLE_H
