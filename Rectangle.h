@@ -19,13 +19,13 @@ public:
     virtual Shape* cloneNew() const override;
 
     virtual bool intersects(const Rectangle& other);
-<<<<<<< HEAD
+
     virtual bool intersects(const Circle& other);
     virtual bool intersects(double xp, double yp);
-=======
+
    
     virtual ~Rectangle() {}
->>>>>>> 7108c2563667eb6a2397d9d4a79e2ed0a8a05d97
+
 };
 
 #endif // RECTANGLE_H
