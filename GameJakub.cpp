@@ -3,6 +3,7 @@
 #include "defines.h"
 #include "ShapeRendering.h"
 #include "Rectangle.h"
+#include <random>
 #include <iostream>
 GameJakub::GameJakub()
     : circle(80, GAME_WIDTH/2.0, GAME_HEIGHT/2.0)

@@ -6,6 +6,7 @@
 #include "ShapePixmap.h"
 #include "ShapeCar.h"
 #include "threading.h"
+#include <random>
 class GameJakub : public GameInterface
 {
 public:

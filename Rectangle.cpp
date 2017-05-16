@@ -44,10 +44,30 @@ bool Rectangle::intersects(const Rectangle& other)
            (y2 > other.y) && (y < othery2);
 }
 
-bool Rectangle::intersects_ball(const Circle& other)
+bool Rectangle::intersects(const Circle& other)
 {
-    if((other.x+other.radius)>=(x+width) || (other.x-other.radius)>=(x+width)){
+    //D
+    double dx = other.x - other.radius;
+    double dy = other.y - other.radius;
+    //A
+    double ax = other.x - other.radius;
+    double ay = other.y + other.radius;
+    //B
+    double bx = other.x + other.radius;
+    double by = other.y + other.radius;
+    //C
+    double cx = other.x + other.radius;
+    double cy = other.y - other.radius;
+
+    if(intersects(dx,dy) || intersects(ax,ay) || intersects(bx,by) || intersects(cx,cy))
         return true;
-    }
+
+    return false;
+}
+
+bool Rectangle::intersects(double xp,double yp)
+{
+    if(xp>x && yp>y && xp<(x+width) && yp<(y + height))
+        return true;
     return false;
 }
