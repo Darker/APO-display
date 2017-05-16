@@ -12,15 +12,15 @@ public:
     // used to indicate wheel spinning
     uint8_t wheelSpin;
 
-    static constexpr const double TRUNK_WIDTH = 9;
-    static constexpr const double TRUNK_LENGTH = 15;
+    static constexpr const double TRUNK_WIDTH = 8;
+    static constexpr const double TRUNK_LENGTH = 13;
     static constexpr const double WHEEL_WIDTH = 2;
     static constexpr const double WHEEL_LENGTH = 3;
     static constexpr const double LIGHT_DIAMETER = 2;
     // coordinates relative to car center
     // top left wheel when the car faces right screen border
-    static constexpr const double WHEEL_LEFT_X = -1*(TRUNK_LENGTH/3.0);
-    static constexpr const double WHEEL_TOP_Y = -1*(TRUNK_WIDTH/2.0+WHEEL_WIDTH);
+    static constexpr const double WHEEL_X_OFFSET = (TRUNK_LENGTH/3.0);
+    static constexpr const double WHEEL_Y_OFFSET = (TRUNK_WIDTH/2.0);
 
     // lights positions
     static constexpr const double TOP_LIGHT_Y = -1*(TRUNK_WIDTH/4.0);
@@ -36,6 +36,9 @@ public:
 
     double getCy() const;
     void setCy(double value);
+
+    Color getColor() const;
+    void setColor(const Color& value);
 
 protected:
     // car center

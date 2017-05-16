@@ -17,6 +17,8 @@ public:
     virtual Shape* cloneNew() const override;
 
     virtual bool intersects(const Rectangle& other);
+
+    virtual ~Rectangle() {}
 };
 
 #endif // RECTANGLE_H

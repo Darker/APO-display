@@ -12,7 +12,7 @@ GameJakub::GameJakub()
     , car(ShapeCar::TRUNK_LENGTH/2.0+1, GAME_HEIGHT/2, Color(0,100,255))
     , mt(rd())
     , testRect(GAME_WIDTH-20,GAME_HEIGHT-20,20, 20)
-    , shapesPerSec(5)
+    , shapesPerSec(2.5)
     , speed(1)
     , shapesToGenerate(1)
 {
@@ -28,8 +28,12 @@ std::vector<Shape*> GameJakub::getShapes()
     //result.push_back(new Rectangle(0,0,GAME_WIDTH, 40));
     result.push_back(car.cloneNew());
     for(size_t i=0, l=obstructions.size(); i<l; ++i) {
+        //result.push_back(new Rectangle(obstructions[i].x, obstructions[i].y, obstructions[i].width, obstructions[i].height, Color(255,255,11)));
         result.push_back(obstructions[i].cloneNew());
     }
+//    for(size_t i=0, l=255; i<l; ++i) {
+//        result.push_back(new Rectangle(i,i,2,2,Color(i,i,i)));
+//    }
     //result.push_back(testRect.cloneNew());
     shapeMutex.unlock();
     return result;
@@ -65,27 +69,28 @@ void GameJakub::tick()
         cary = GAME_HEIGHT-carBorder;
     car.setCy(cary);
 
-    shapesPerSec += deltaT/100.0;
-    speed += deltaT/15.0;
+    shapesPerSec += deltaT/200.0;
+    speed += deltaT/20.0;
     shapesToGenerate += shapesPerSec*deltaT;
 
     while(shapesToGenerate>=1) {
         std::uniform_real_distribution<double> position(0.0, GAME_HEIGHT);
         std::uniform_real_distribution<double> dimensions(5.0, 20.0);
 
-        Rectangle r(GAME_WIDTH-10, position(mt), dimensions(mt), dimensions(mt));
+        Rectangle r(GAME_WIDTH+1, position(mt), dimensions(mt), dimensions(mt));
         r.color = Color(255,0,0);
         obstructions.push_back(r);
 
         shapesToGenerate--;
     }
-
+    car.setColor(Color(0,100,255));
     for(size_t i=0, l=obstructions.size(); i<l; ++i) {
         if(car.intersects(obstructions[i])) {
-            std::cout<<"You suck idiot.\n";
+            std::cout<<"You crashed the car along with your parents, wife and kids. Nobody survived.\n";
             exit(1);
+            //car.setColor(Color(240, 200, 0));
         }
-        obstructions[i].x -= deltaT*15*speed;
+        obstructions[i].x -= deltaT*19*speed;
         if((obstructions[i].x+obstructions[i].width) < 0) {
             obstructions.erase(obstructions.begin() + i);
             i--;

@@ -18,7 +18,7 @@ public:
     double angle;
 
 
-
+    virtual ~Circle() {}
 
     // Shape interface
 public:

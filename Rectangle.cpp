@@ -34,6 +34,10 @@ Shape* Rectangle::cloneNew() const
 
 bool Rectangle::intersects(const Rectangle& other)
 {
-    return (x < (other.x+other.width))  && (x+width > (other.x)) &&
-           (y < (other.y+other.height)) && (y+height >(other.y));
+    const double x2 = x+width;
+    const double y2 = y+height;
+    const double otherx2 = other.x+other.width;
+    const double othery2 = other.y+other.height;
+    return (x2 > other.x) && (x < otherx2) &&
+           (y2 > other.y) && (y < othery2);
 }
