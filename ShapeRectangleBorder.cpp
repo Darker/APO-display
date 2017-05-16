@@ -45,7 +45,7 @@ void ShapeRectangleBorder::setBorderWidth(int value)
     borderWidth = value;
 }
 
-double ShapeRectangleBorder::setWidth(const double w) const
+double ShapeRectangleBorder::setWidth(const double w)
 {
     width = w;
     body.width = width-borderWidth*2;
@@ -53,7 +53,7 @@ double ShapeRectangleBorder::setWidth(const double w) const
         body.width = 0;
 }
 
-double ShapeRectangleBorder::setHeight(const double w) const
+double ShapeRectangleBorder::setHeight(const double w)
 {
     height = w;
     body.height = w-borderWidth*2;
@@ -61,15 +61,15 @@ double ShapeRectangleBorder::setHeight(const double w) const
         body.height = 0;
 }
 
-double ShapeRectangleBorder::setX(const double X) const
+double ShapeRectangleBorder::setX(const double X)
 {
     x = X;
-    body.x = X+border.width;
+    body.x = X+borderWidth;
 }
 
-double ShapeRectangleBorder::setY(const double Y) const
+double ShapeRectangleBorder::setY(const double Y)
 {
     y = Y;
-    body.y = Y+border.width;
+    body.y = Y+borderWidth;
 }
 
