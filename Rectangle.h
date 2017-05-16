@@ -19,7 +19,8 @@ public:
     virtual Shape* cloneNew() const override;
 
     virtual bool intersects(const Rectangle& other);
-    virtual bool intersects_ball(const Circle& other);
+    virtual bool intersects(const Circle& other);
+    virtual bool intersects(double xp, double yp);
 };
 
 #endif // RECTANGLE_H
