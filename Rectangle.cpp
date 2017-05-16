@@ -29,8 +29,6 @@ void Rectangle::render(std::vector<Color>& pixmap, int width, int height) const
     rectangle(pixmap, color, this->width, this->height, x, y, width);
 }
 
-
-
 Shape* Rectangle::cloneNew() const
 {
     return new Rectangle(*this);
