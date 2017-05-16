@@ -10,6 +10,8 @@ class Pentagram;
 #include "Pentagram.h"
 #include "GameInterface.h"
 
+#include <random>
+
 class Game: public GameInterface
 {
 public:
@@ -30,6 +32,9 @@ protected:
     Circle circle;
     Platform platform1;
     Platform platform2;
+
+    std::random_device rd;
+    std::mt19937 mt;
 };
 
 #endif // GAME_H

@@ -15,7 +15,7 @@ Circle::Circle(double x, double y, double vx, double vy, int radius) : Shape()
 ,radius(radius)
 ,vx(vx)
 ,vy(vy)
-,angle(vy/vx)
+
 {}
 void Circle::move(double time){
     if(y>=GAME_HEIGHT || y<=0){
