@@ -42,11 +42,11 @@ void Game::tick()
 
     circle.move(deltaT);
 
-    if(platform1.intersects_ball(circle)){
+    if(platform1.intersects(circle)){
         circle.bounce_platform();
     }
 
-    if(platform2.intersects_ball(circle)){
+    if(platform2.intersects(circle)){
         circle.bounce_platform();
     }
 
