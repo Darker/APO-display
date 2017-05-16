@@ -12,7 +12,7 @@ Game::Game()
     std::uniform_real_distribution<double> speed(0.0, 40);
 
     platform1 = Platform(5, (double) position(mt), GAME_WIDTH/25,GAME_HEIGHT/4);
-    platform2 = Platform(GAME_WIDTH-6, (double) position(mt),GAME_WIDTH/25,GAME_HEIGHT/4);
+    platform2 = Platform(GAME_WIDTH-5-GAME_WIDTH/25, (double) position(mt),GAME_WIDTH/25,GAME_HEIGHT/4);
 
     circle = Circle((double)(GAME_WIDTH/2), (double)(GAME_HEIGHT/2), (double)(speed(mt)), (double)(speed(mt)), (int)10);
 }
