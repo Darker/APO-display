@@ -7,6 +7,7 @@
 #include <QtMath>
 #include <cstdlib>
 #include "defines.h"
+#include <QtGlobal>
 Plotter::Plotter(QSize size, QObject* parent)
     : QObject(parent)
     , size(size)
@@ -25,9 +26,12 @@ void Plotter::plot() {
     //img.fill(Qt::black);
     unsigned char* const rawImage = img.bits();
     //unsigned char* const rawImage = (unsigned char*)std::malloc(size.width()*size.height()*3);
-    for (int i = 0; i < data.size(); i++) {
+
+    const int length = qMin((int)(size.width()*size.height()*3), (int)data.size());
+    for (int i = 0; i < length; i++) {
         const Color& color = data[i];
         const int pos = i*3;
+
         rawImage[pos] = color.r;
         rawImage[pos+1] = color.g;
         rawImage[pos+2] = color.b;

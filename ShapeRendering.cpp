@@ -164,21 +164,61 @@ void setPixmap(std::vector<Color>& pixmap, const int width, const std::vector<Co
         sc_offset+=sourceWidth;
     }
 }
-
-void rectangle(std::vector<Color>& pixmap, const Color& color, const int w, const int h, int x, const int y, const int pixmapWidth)
+/** Draws a rectangle in 1D array
+ * Arguments:
+ *   pixmap      - 1D array of Color
+ *   color       - rectangle color
+ *   w           - rectangle width
+ *   h           - rectanhle height
+ *   x           - x position
+ *   y           - y position
+ *   pixmapWidth - width of the image (height can be deducted from width if needed but is practically unnecessary) */
+void rectangle(std::vector<Color>& pixmap, const Color& color, const int w, const int h, int x, int y, const int pixmapWidth)
 {
     if(x>=pixmapWidth)
         return;
-    const int renderWidth = std::min(w, pixmapWidth-x);
-    // offset for rendering
-    int tg_offset = y*pixmapWidth+x;
-    const int tg_end = pixmap.size();
-    int lines = 0;
+    if(x+w<0)
+        return;
+    if(y+h<0)
+        return;
+    const int endx = std::min(w+x, pixmapWidth);
+    const int endy = y+h;
+    const int endxy = pixmap.size();
 
-    for(; tg_offset<tg_end && lines<h; tg_offset+=pixmapWidth) {
-        for(int cx=0; cx<renderWidth; ++cx) {
-            pixmap[tg_offset+cx] = color;
+    if(y<0)
+        y=0;
+    for(; y<endy; ++y) {
+        for(int cx=std::max(x,0);cx<endx;++cx) {
+            const int pos = y*pixmapWidth+cx;
+            if(pos>endxy)
+                return;
+            pixmap[pos] = color;
         }
-        lines++;
     }
+//    if(x>=pixmapWidth)
+//        return;
+//    if(x+w<0)
+//        return;
+//    if(y+h<0)
+//        return;
+//    // Width of one consistent line of color of the rectangle
+//    // if the rectangle is partially out of pixmap area,
+//    // thw width is smaller than rectangle width
+//    const int renderWidth = std::min(w, pixmapWidth-x);
+//    // offset in the arrray where the rendering starts
+//    // 0 would be for [0,0] coordinate
+//    int tg_offset = y*pixmapWidth+x;
+//    // maximum offset to ever render, which is the array size
+//    const int tg_end = pixmap.size();
+//    int lines = 0;
+
+//    for(; tg_offset<tg_end && lines<h; tg_offset+=pixmapWidth) {
+//        for(int cx=0; cx<renderWidth; ++cx) {
+//            // This check keeps failing and my program crashes
+//            if(tg_offset+cx >= tg_end)
+//                return;
+//            pixmap[tg_offset+cx] = color;
+//        }
+//        lines++;
+//    }
 }
