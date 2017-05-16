@@ -4,12 +4,13 @@
 //        const uint16_t BLUE =  0b0000000000011111;
 //        const uint16_t RED =   0b1111100000000000;
 const Color Color::YELLOW(255,255,0);
-
+const Color Color::GRAY(128, 128, 128);
+const Color Color::WHITE(255, 255, 255);
 
 Color::Color(const uint16_t rgb565) 
-    : r((((rgb565&RED)>>11)*255)/31)
-    , g((((rgb565&GREEN)>>6)*255)/63)
-    , b(((rgb565&BLUE)*255)/31) {}
+    : r((((rgb565&RED565)>>11)*255)/31)
+    , g((((rgb565&GREEN565)>>6)*255)/63)
+    , b(((rgb565&BLUE565)*255)/31) {}
 Color::Color(const uint8_t r, const uint8_t g, const uint8_t b) 
     : r(r)
     , g(g)
@@ -30,7 +31,7 @@ uint32_t Color::qRGBValue() const
 
 
 Color::operator uint16_t() const {
-    return ((((uint16_t)r)<<8)&RED) | ((((uint16_t)g)<<3)&GREEN) | ((((uint16_t)b>>3))&BLUE);
+    return ((((uint16_t)r)<<8)&RED565) | ((((uint16_t)g)<<3)&GREEN565) | ((((uint16_t)b>>3))&BLUE565);
 }
 Color::operator std::string() const {
     std::stringstream s;

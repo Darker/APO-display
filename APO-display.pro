@@ -55,7 +55,8 @@ SOURCES += \
     qt_stuff/QtUDP.cpp \
     ShapeCar.cpp \
     qt_stuff/GameSignalsSlots.cpp \
-    GameIntersectionTest.cpp
+    GameIntersectionTest.cpp \
+    ShapeRectangleBorder.cpp
 
 HEADERS += \
     Color.h \
@@ -90,7 +91,8 @@ HEADERS += \
     qt_stuff/QtUDP.h \
     ShapeCar.h \
     qt_stuff/GameSignalsSlots.h \
-    GameIntersectionTest.h
+    GameIntersectionTest.h \
+    ShapeRectangleBorder.h
 
 FORMS += qt_stuff/MainWindow.ui \
     qt_stuff/SpinnerButton.ui
