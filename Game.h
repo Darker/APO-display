@@ -19,7 +19,7 @@ public:
     Game();
     // Moves platform of player X
     void movePlayer(int playerID, int offset);
-    // This is not htread safe!
+
     // must lock internal shape array before copyinf
     virtual std::vector<Shape*> getShapes();
 
