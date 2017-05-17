@@ -57,5 +57,5 @@ bool Game::tick()
     }
 
 
-
+    return true;
 }
