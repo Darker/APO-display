@@ -9,7 +9,7 @@ Game::Game()
     , mt(rd())
 {
     std::uniform_real_distribution<double> position(0.0, GAME_HEIGHT);
-    std::uniform_real_distribution<double> speed(0.0, 40);
+    std::uniform_real_distribution<double> speed(0.0, 100);
 
     platform1 = Platform(5, (double) position(mt), GAME_WIDTH/25,GAME_HEIGHT/4);
     platform2 = Platform(GAME_WIDTH-5-GAME_WIDTH/25, (double) position(mt),GAME_WIDTH/25,GAME_HEIGHT/4);
@@ -42,6 +42,9 @@ void Game::tick()
 
 
     circle.move(deltaT);
+
+    platform1.y += button1.moveDelta();
+    platform2.y +=button3.moveDelta();
 
     if(platform1.intersects(circle)){
         circle.bounce_platform();

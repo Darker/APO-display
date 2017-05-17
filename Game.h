@@ -9,6 +9,7 @@ class Pentagram;
 
 #include "Pentagram.h"
 #include "GameInterface.h"
+#include "GameButton.h"
 
 #include <random>
 
@@ -21,17 +22,25 @@ public:
     // This is not htread safe!
     // must lock internal shape array before copyinf
     virtual std::vector<Shape*> getShapes();
+
     // one game tick
     virtual void tick();
     virtual ~Game(){}
+
 protected:
     // Mutex for copying shapes
-        // TODO later
 
     // Some testing garbage
     Circle circle;
     Platform platform1;
     Platform platform2;
+    GameButton button1;
+    GameButton button2;
+    GameButton button3;
+
+    virtual GameButton* getButtonRED() override {return &button1;}
+    virtual GameButton* getButtonBLUE() override {return &button3;}
+    virtual GameButton* getButtonGREEN() override {return &button2;}
 
     std::random_device rd;
     std::mt19937 mt;

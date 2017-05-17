@@ -18,7 +18,7 @@ Circle::Circle(double x, double y, double vx, double vy, int radius) : Shape()
 
 {}
 void Circle::move(double time){
-    if(y>=GAME_HEIGHT || y<=0){
+    if(y+radius+0.01>=GAME_HEIGHT || y-radius-0.01<=0){
         bounce_ceiling();
     }
 
@@ -31,11 +31,13 @@ void Circle::move(double time){
 void Circle::bounce_platform(){
 
     vx=vx*(-1);
+    vx++;
 }
 
 void Circle::bounce_ceiling(){\
 
     vy=vy*(-1);
+    vy++;
 
 }
 
