@@ -15,7 +15,7 @@ Circle::Circle(double x, double y, double vx, double vy, int radius) : Shape()
 ,radius(radius)
 ,vx(vx)
 ,vy(vy)
-,angle(vy/vx)
+
 {}
 void Circle::move(double time){
     if(y>=GAME_HEIGHT || y<=0){
@@ -39,12 +39,7 @@ void Circle::bounce_ceiling(){\
 
 }
 
-/*bool Circle::intersects(Platform platform){
-if((x+radius)>=(platform.x+platform.width) || (x-radius)>=(platform.x+platform.width) || (x+radius)>=(platform.x-platform.width)){
-    return true;
-}
-return false;
-}*/
+
 void Circle::render(std::vector<Color> &pixmap, int width, int height) const
 {
     circleFill(pixmap,Color(255,0,0),radius,x,y,width);

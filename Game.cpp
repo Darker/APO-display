@@ -1,13 +1,20 @@
 #include "Game.h"
-
+#include <random>
 
 #include "defines.h"
 Game::Game()
-    : circle(GAME_WIDTH/2,GAME_HEIGHT/2,15,5,10)
-    , platform1(150,15,GAME_WIDTH-10,80)
-    , platform2(150,15,0,40)
+    : circle()
+    , platform1(5,GAME_HEIGHT/2,GAME_WIDTH/25,GAME_HEIGHT/4)
+    , platform2(GAME_WIDTH-5,GAME_HEIGHT/2,GAME_WIDTH/25,GAME_HEIGHT/4)
+    , mt(rd())
 {
+    std::uniform_real_distribution<double> position(0.0, GAME_HEIGHT);
+    std::uniform_real_distribution<double> speed(0.0, 40);
 
+    platform1 = Platform(5, (double) position(mt), GAME_WIDTH/25,GAME_HEIGHT/4);
+    platform2 = Platform(GAME_WIDTH-5-GAME_WIDTH/25, (double) position(mt),GAME_WIDTH/25,GAME_HEIGHT/4);
+
+    circle = Circle((double)(GAME_WIDTH/2), (double)(GAME_HEIGHT/2), (double)(speed(mt)), (double)(speed(mt)), (int)10);
 }
 
 void Game::movePlayer(int playerID, int offset)
@@ -28,26 +35,25 @@ std::vector<Shape*> Game::getShapes()
 
 bool Game::tick()
 {
-    // Delta time in seconds
-    // should be something like 0.05
+
     double deltaT = sinceLastTick()/1000.0;
     const double rotations_per_second = 0.05;
 
-   //pentac.rotation += rotations_per_second*deltaT*2.0*GAME_PI;
 
-
-
-    //just trying to make it bounce, dj hit the decks
-    //if I change if into while whole thing crashes
 
     circle.move(deltaT);
 
     if(platform1.intersects(circle)){
         circle.bounce_platform();
+        circle.vx++;
+        circle.vy++;
+
     }
 
     if(platform2.intersects(circle)){
         circle.bounce_platform();
+        circle.vx++;
+        circle.vy++;
     }
 
 

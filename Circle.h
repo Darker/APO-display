@@ -15,7 +15,7 @@ public:
     double vx;
     double vy;
     int radius;
-    double angle;
+
 
 
     virtual ~Circle() {}
