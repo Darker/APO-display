@@ -40,7 +40,7 @@ std::vector<Shape*> GameJakub::getShapes()
     return result;
 }
 
-void GameJakub::tick()
+bool GameJakub::tick()
 {
     const double deltaT = sinceLastTick()/1000.0;
     shapeMutex.lock();
@@ -100,4 +100,5 @@ void GameJakub::tick()
     }
 
     shapeMutex.unlock();
+    return true;
 }

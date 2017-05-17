@@ -15,7 +15,7 @@ public:
     // must lock internal shape array before copyinf
     virtual std::vector<Shape*> getShapes();
     // one game tick
-    virtual void tick();
+    virtual bool tick();
     GameButton button1;
     GameButton button2;
     GameButton button3;

@@ -16,11 +16,13 @@ protected:
     // GameInterface interface
 public:
     virtual std::vector<Shape*> getShapes() override;
-    virtual void tick() override;
+    virtual bool tick() override;
 
     GameButton button1;
     GameButton button2;
     GameButton button3;
+
+    double switchCooldown;
 
     virtual GameButton* getButtonRED() override {return &button1;}
     virtual GameButton* getButtonBLUE() override {return &button3;}

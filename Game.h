@@ -20,7 +20,7 @@ public:
     // must lock internal shape array before copyinf
     virtual std::vector<Shape*> getShapes();
     // one game tick
-    virtual void tick();
+    virtual bool tick();
     virtual ~Game(){}
 protected:
     // Mutex for copying shapes

@@ -11,6 +11,7 @@
 #include "defines.h"
 #include "GameJakub.h"
 #include "GameSignalsSlots.h"
+#include "GameIntersectionTest.h"
 int mainQt(int argc, char *argv[]) {
     // Register meta types for events
     qRegisterMetaType<Color>("Color");

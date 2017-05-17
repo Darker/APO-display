@@ -6,6 +6,8 @@
 const Color Color::YELLOW(255,255,0);
 const Color Color::GRAY(128, 128, 128);
 const Color Color::WHITE(255, 255, 255);
+const Color Color::RED(255, 0, 0);
+const Color Color::GREEN(0, 128, 0);
 
 Color::Color(const uint16_t rgb565) 
     : r((((rgb565&RED565)>>11)*255)/31)

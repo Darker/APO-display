@@ -9,6 +9,8 @@ class Color {
         static const Color YELLOW;
         static const Color GRAY;
         static const Color WHITE;
+        static const Color RED;
+        static const Color GREEN;
         Color() : r(0), g(0), b(0) {}
         Color(const uint16_t rgb565);
         Color(const uint8_t r, const uint8_t g, const uint8_t b);

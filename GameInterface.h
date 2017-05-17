@@ -14,7 +14,8 @@ public:
     // must lock internal shape array before copyinf
     virtual std::vector<Shape*> getShapes() = 0;
     // one game tick
-    virtual void tick() = 0;
+    // returns false if game has ended
+    virtual bool tick() = 0;
     virtual ~GameInterface(){}
     // Return pointer to RED/BLUE/GREEN spinner
     // button

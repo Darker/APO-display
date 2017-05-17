@@ -16,15 +16,23 @@ public:
     int getBorderWidth() const;
     void setBorderWidth(int value);
 
-    double setWidth(const double width);
-    double setHeight(const double width);
-    double setX(const double X);
-    double setY(const double Y);
+    void setWidth(const double width);
+    void setHeight(const double width);
+    void setX(const double X);
+    void setY(const double Y);
+
+    void recalculateBody();
+
+    virtual Shape* cloneNew() const override;
 protected:
     double borderWidth;
     // colored body inside
     Rectangle body;
 
+
+    // Shape interface
+public:
+    virtual void render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHeight) const override;
 };
 
 #endif // SHAPERECTANGLEBORDER_H

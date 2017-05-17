@@ -13,6 +13,8 @@ ShapeRectangleBorder::ShapeRectangleBorder(double x, double y, double w, double 
     setY(y);
     setWidth(w);
     setHeight(h);
+    setBorderWidth(bwidth);
+    recalculateBody();
 }
 
 Color ShapeRectangleBorder::getBorder_color() const
@@ -45,31 +47,52 @@ void ShapeRectangleBorder::setBorderWidth(int value)
     borderWidth = value;
 }
 
-double ShapeRectangleBorder::setWidth(const double w)
+void ShapeRectangleBorder::setWidth(const double w)
 {
     width = w;
+    recalculateBody();
+}
+
+void ShapeRectangleBorder::setHeight(const double w)
+{
+    height = w;
+    recalculateBody();
+}
+
+void ShapeRectangleBorder::setX(const double X)
+{
+    x = X;
+    recalculateBody();
+}
+
+void ShapeRectangleBorder::setY(const double Y)
+{
+    y = Y;
+    recalculateBody();
+}
+
+void ShapeRectangleBorder::recalculateBody()
+{
+    body.x = x+borderWidth;
+    body.y = y+borderWidth;
+
+    body.height = height-borderWidth*2;
+    if(body.height<0)
+        body.height = 0;
+
     body.width = width-borderWidth*2;
     if(body.width<0)
         body.width = 0;
 }
 
-double ShapeRectangleBorder::setHeight(const double w)
+Shape* ShapeRectangleBorder::cloneNew() const
 {
-    height = w;
-    body.height = w-borderWidth*2;
-    if(body.height<0)
-        body.height = 0;
+    return new ShapeRectangleBorder(*this);
 }
 
-double ShapeRectangleBorder::setX(const double X)
+void ShapeRectangleBorder::render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHeight) const
 {
-    x = X;
-    body.x = X+borderWidth;
-}
-
-double ShapeRectangleBorder::setY(const double Y)
-{
-    y = Y;
-    body.y = Y+borderWidth;
+    Rectangle::render(pixmap, pixmapWidth, pixmapHeight);
+    body.render(pixmap, pixmapWidth, pixmapHeight);
 }
 

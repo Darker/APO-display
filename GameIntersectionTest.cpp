@@ -19,17 +19,38 @@ std::vector<Shape*> GameIntersectionTest::getShapes()
     return result;
 }
 
-void GameIntersectionTest::tick()
+bool GameIntersectionTest::tick()
 {
     const double deltaT = sinceLastTick()/1000.0;
     shapeMutex.lock();
     double offx = button1.moveDelta();
     double offy = button3.moveDelta();
 
-    if(button2.moveDelta()!=0) {
+    if(switchCooldown>0) {
+        switchCooldown -= deltaT;
+    }
+
+    if(button2.moveDelta()!=0 && switchCooldown<=0) {
         ShapeRectangleBorder* newActiveRect = activeRect==&a?&b:&a;
         activeRect->setBorder_color(Color::GRAY);
+        activeRect = newActiveRect;
+        activeRect->setBorder_color(Color::WHITE);
 
+        switchCooldown = 0.2;
+    }
+
+
+
+    activeRect->setX(activeRect->x+offx);
+    activeRect->setY(activeRect->y+offy);
+
+    if(a.intersects(b)) {
+        a.setBody_color(Color::RED);
+        b.setBody_color(Color::RED);
+    }
+    else {
+        a.setBody_color(Color::GREEN);
+        b.setBody_color(Color::GREEN);
     }
 
     shapeMutex.unlock();

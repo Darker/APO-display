@@ -26,7 +26,7 @@ std::vector<Shape*> Game::getShapes()
     return returnArray;
 }
 
-void Game::tick()
+bool Game::tick()
 {
     // Delta time in seconds
     // should be something like 0.05
