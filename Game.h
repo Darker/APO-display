@@ -37,6 +37,8 @@ protected:
     GameButton button1;
     GameButton button2;
     GameButton button3;
+    int player1_score;
+    int player2_score;
 
     virtual GameButton* getButtonRED() override {return &button1;}
     virtual GameButton* getButtonBLUE() override {return &button3;}

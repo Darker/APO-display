@@ -20,7 +20,10 @@ public:
 
     virtual bool intersects(const Rectangle& other);
 
-    virtual bool intersects(const Circle& other);
+    virtual bool intersects_left(const Circle& other);
+    virtual bool intersects_right(const Circle& other);
+    virtual bool intersects_up(const Circle& other);
+    virtual bool intersects_bottom(const Circle& other);
     virtual bool intersects(double xp, double yp);
 
    

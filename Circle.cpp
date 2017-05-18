@@ -31,14 +31,28 @@ void Circle::move(double time){
 void Circle::bounce_platform(){
 
     vx=vx*(-1);
-    vx++;
+    speed_up();
 }
 
 void Circle::bounce_ceiling(){\
 
     vy=vy*(-1);
-    vy++;
+    speed_up();
 
+}
+
+void Circle::speed_up(){
+    vx*=1.25;
+    vy*=1.25;
+}
+
+int Circle::isPlayable(){
+
+    if(x-radius<=-radius)
+        return -1;
+    if(x+radius>=GAME_WIDTH)
+        return 1;
+    return 0;
 }
 
 

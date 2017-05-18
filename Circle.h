@@ -27,6 +27,8 @@ public:
     void move(double time);
     void bounce_ceiling();
     void bounce_platform();
+    void  speed_up();
+    int isPlayable();
 
 };
 
