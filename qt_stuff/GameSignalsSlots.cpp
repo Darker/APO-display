@@ -3,7 +3,10 @@
 #include "MainWindow.h"
 void GameSignalsSlots::doGameTick()
 {
-    game->tick();
+    if(!game->tick()) {
+        qDebug()<<"Game decided to end.";
+        QCoreApplication::quit();
+    }
 }
 
 void GameSignalsSlots::doRenderTick()

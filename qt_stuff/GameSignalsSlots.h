@@ -20,6 +20,8 @@ public:
 public slots:
     void doGameTick();
     void doRenderTick();
+signals:
+    void gameEnded();
 protected:
     std::vector<Color> pixmap;
 };

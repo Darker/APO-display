@@ -12,6 +12,7 @@
 #include "GameJakub.h"
 #include "GameSignalsSlots.h"
 #include "GameIntersectionTest.h"
+#include "GameMenu.h"
 int mainQt(int argc, char *argv[]) {
     // Register meta types for events
     qRegisterMetaType<Color>("Color");
@@ -23,7 +24,7 @@ int mainQt(int argc, char *argv[]) {
     w->show();
     GameInterface* game = nullptr;
 #ifdef _JAKUBX
-    game = new GameJakub();
+    game = new GameMenu();
 #else
     game = new Game();
 #endif

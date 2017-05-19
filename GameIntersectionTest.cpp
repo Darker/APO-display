@@ -54,4 +54,5 @@ bool GameIntersectionTest::tick()
     }
 
     shapeMutex.unlock();
+    return true;
 }

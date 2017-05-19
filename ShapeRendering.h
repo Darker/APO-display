@@ -4,6 +4,9 @@
 #include <vector>
 // Helper functions
 void setPixel(std::vector<Color>& pixmap, const Color& color, const int x, const int y, const int pixmapWidth);
+// sets pixel with alpha blending given as 0-255 where 255 is fully opaque
+void blendPixel(std::vector<Color>& pixmap, const Color& color, const int x, const int y, uint8_t opacity, const int pixmapWidth);
+
 void line(std::vector<Color>& pixmap, const Color& color, const int x1, const int y1, const int x2, const int y2, const int pixmapWidth);
 void lineAngle(std::vector<Color>& pixmap, const Color& color, const int x1, const int y1, double angle, const int length, const int pixmapWidth);
 void circle(std::vector<Color>& pixmap, const Color& color, const int r, const int x0, const int y0, const int pixmapWidth);

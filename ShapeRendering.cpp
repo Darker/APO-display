@@ -3,14 +3,31 @@
 #include <cstring>
 // Shape render implementations here
 #define sgn(x) (x==0?0:(x<0?-1:1))
-void setPixel(std::vector<Color>& pixmap, const Color& color, const int x, const int y, const int width)
+void setPixel(std::vector<Color>& pixmap, const Color& color, const int x, const int y, const int pixmapWidth)
 {
-    if(x<width && x>=0 && y>=0) {
-        const int pos = width*y + x;
+    if(x<pixmapWidth && x>=0 && y>=0) {
+        const int pos = pixmapWidth*y + x;
         if(pos<pixmap.size())
             pixmap[pos] = color;
     }
 }
+
+#define BLEND_COLORS(a,b,b_opacity) (std::min((int)std::round((((float)a)*(1-b_opacity) + ((float)b)*(b_opacity))), 255))
+void blendPixel(std::vector<Color>& pixmap, const Color& color, const int x, const int y, uint8_t opacity, const int pixmapWidth)
+{
+    if(opacity==0)
+        return;
+    if(x<pixmapWidth && x>=0 && y>=0) {
+        const int pos = pixmapWidth*y + x;
+        if(pos<pixmap.size()) {
+            const float srcA= opacity/255.0;
+            const Color original = pixmap[pos];
+            const Color mix(BLEND_COLORS(original.r,color.r,srcA), BLEND_COLORS(original.g,color.g,srcA), BLEND_COLORS(original.b,color.b,srcA));
+            pixmap[pos] = mix;
+        }
+    }
+}
+
 
 void line(std::vector<Color>& pixmap, const Color& color, const int x1, const int y1, const int x2, const int y2, const int width)
 {
@@ -222,3 +239,4 @@ void rectangle(std::vector<Color>& pixmap, const Color& color, const int w, cons
 //        lines++;
 //    }
 }
+
