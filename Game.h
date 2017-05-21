@@ -11,6 +11,7 @@ class Pentagram;
 #include "GameInterface.h"
 #include "GameButton.h"
 
+#include <mutex>
 #include <random>
 
 class Game: public GameInterface
@@ -29,7 +30,7 @@ public:
 
 protected:
     // Mutex for copying shapes
-
+    std::mutex shapeMutex;
     // Some testing garbage
     Circle circle;
     Platform platform1;
@@ -39,6 +40,8 @@ protected:
     GameButton button3;
     int player1_score;
     int player2_score;
+    std::string pl1_str;
+    std::string pl2_str;
 
     virtual GameButton* getButtonRED() override {return &button1;}
     virtual GameButton* getButtonBLUE() override {return &button3;}
