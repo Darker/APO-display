@@ -5,6 +5,8 @@
 #include <string>
 #include <future>
 #include <memory>
+#include <map>
+
 //#include "Future.h"
 typedef std::future<stbtt_fontinfo> font_future;
 typedef std::shared_future<stbtt_fontinfo> font_future_shared;

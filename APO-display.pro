@@ -59,7 +59,7 @@ SOURCES += \
     ShapeRectangleBorder.cpp \
     GameMenu.cpp \
     ShapeText.cpp \
-    libs/libs_impl.cpp \
+    libs_impl.cpp \
     Future.cpp
 
 HEADERS += \
