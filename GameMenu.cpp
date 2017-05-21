@@ -8,7 +8,7 @@ std::vector<Shape*> GameMenu::getShapes()
 {
     std::vector<Shape*> result;
     shapeMutex.lock();
-    result.push_back(new ShapeText("abcdefg", Color::RED, 10, 40, "diablo.ttf"));
+    result.push_back(new ShapeText("H", Color::RED, 10, 40, "diablo.ttf"));
     shapeMutex.unlock();
     return result;
 }

@@ -14,11 +14,16 @@ ShapeText::ShapeText(const std::string& text, const Color& color, double x, doub
 {
     GLOBAL_CACHE.getFontLater(fontPath);
 }
-
+char ttf_buffer[1<<25];
 void ShapeText::render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHeight) const
 {
 
     const stbtt_fontinfo font = GLOBAL_CACHE.getFont(fontPath);
+//    stbtt_fontinfo font;
+
+//    fread(ttf_buffer, 1, 1<<25, fopen(fontPath.c_str(), "rb"));
+//    stbtt_InitFont(&font, (const unsigned char*)ttf_buffer, stbtt_GetFontOffsetForIndex((const unsigned char*)ttf_buffer,0));
+
     if(font.numGlyphs > 0) {
         int w, h;
         const int scale_y = 40;
@@ -56,12 +61,14 @@ void ShapeText::render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHe
                         continue;
                     blendPixel(pixmap, color, cx+xoffset+x0, cy+y+y0, opacity, pixmapWidth);
                     //setPixel(pixmap, color, cx+x, cy+y, pixmapWidth);
-                    //std::cout<< (" .:ioVM@"[bitmap[cy*w+cx]>>5]);
+                    std::cout<< (" .:ioVM@"[bitmap[cy*w+cx]>>5]);
 
                 }
-                //std::cout<<('\n');
+                std::cout<<('\n');
             }
-            free(bitmap);
+            //STBTT_free(bitmap, font.userdata);
+            ((void)(font.userdata),free(bitmap));
+            //free(bitmap);
             xoffset+=w+1;
         }
     }
