@@ -2,6 +2,8 @@
 #include "ShapeRendering.h"
 #include <iostream>
 #include <fstream>
+#include <cstring>
+#include <cmath>
 ShapeText::FontCache ShapeText::GLOBAL_CACHE = ShapeText::FontCache();
 ShapeText::ShapeText(const std::string& text, const Color& color, double x, double y, const std::string& fontPath) :
       Shape()
@@ -39,7 +41,7 @@ void ShapeText::render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHe
             }
             // copied from example codes
             int advance,lsb,x0,y0,x1,y1;
-            float x_shift = xoffset - (float) floor(xoffset);
+            float x_shift = xoffset - (float) std::floor(xoffset);
             stbtt_GetCodepointHMetrics(&font, character, &advance, &lsb);
             stbtt_GetCodepointBitmapBoxSubpixel(&font, character, scale,scale,x_shift,0, &x0,&y0,&x1,&y1);
 
@@ -119,7 +121,7 @@ stbtt_fontinfo ShapeText::FontCache::loadFont(const std::string& fontPath)
                 (std::istreambuf_iterator<char>()));
         const unsigned char* bufferC = (unsigned char*)(&(buffer[0]));
         unsigned char* newBuffer = (unsigned char*)malloc(buffer.size()*sizeof(char));
-        memcpy(newBuffer, bufferC, buffer.size()*sizeof(char));
+        std::memcpy(newBuffer, bufferC, buffer.size()*sizeof(char));
         stbtt_InitFont(&font, newBuffer, stbtt_GetFontOffsetForIndex(bufferC,0));
     }
 
