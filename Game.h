@@ -33,6 +33,8 @@ protected:
     std::mutex shapeMutex;
     // Some testing garbage
     Circle circle;
+    Circle circle_2;
+
     Platform platform1;
     Platform platform2;
     GameButton button1;
