@@ -55,7 +55,7 @@ int mainQt(int argc, char *argv[]) {
             button->addMovement(offset);
         }
     });
-    QObject::connect(w, &MainWindow::buttonMoved, [game](const int index) {
+    QObject::connect(w, &MainWindow::buttonClicked, [game](const int index) {
         GameButton* button = nullptr;
         switch(index) {
         case 0: button = game->getButtonRED();break;

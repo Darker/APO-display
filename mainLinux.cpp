@@ -79,7 +79,6 @@ void readInput() {
     //std::cout<<"Waiting for display init!\n";
     //renderer.waitForPalcdInit.wait();
     unsigned char* button_mem_base = (unsigned char*)map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
-    int reddeltasum = 0;
     //std::cout<<"Waiting for display done, pointer: "<<std::hex<<(uint32_t)parlcd_mem_base<<"\n";
     while(true) {
         //std::cout<<"Reading buttons: (wait) ";
@@ -91,28 +90,28 @@ void readInput() {
         }
         // every other iteration calculates delta movement
         else {
-            if(lastKnobValues.red!=values.red) {
-                //std::cout<<"Red moved!\n";
+            if(lastKnobValues.red!=values.red || values.redClicked) {
                 if(GameButton* red = game->getButtonRED()) {
-                    const int delta = calculateDelta(lastKnobValues.red, values.red);
-                    reddeltasum+=delta;
-                    red->addMovement(delta);
-                    //std::cout<<"Red updated, sum: "<<reddeltasum<<"\n";
+                    if(lastKnobValues.red!=values.red)
+                        red->addMovement(calculateDelta(lastKnobValues.red, values.red));
+                    if(values.redClicked)
+                        red->clicked();
                 }
             }
-            else {
-                //std::cout<<"Red did not change!\n";
-            }
-            if(lastKnobValues.green!=values.green) {
-                //std::cout<<"green moved!\n";
+            if(lastKnobValues.green!=values.green || values.greenClicked) {
                 if(GameButton* green = game->getButtonGREEN()) {
-                    green->addMovement(calculateDelta(lastKnobValues.green, values.green));
-                    //std::cout<<"green updated!\n";
+                    if(lastKnobValues.green!=values.green)
+                        green->addMovement(calculateDelta(lastKnobValues.green, values.green));
+                    if(values.greenClicked)
+                        green->clicked();
                 }
             }
-            if(lastKnobValues.blue!=values.blue) {
+            if(lastKnobValues.blue!=values.blue || values.blueClicked) {
                 if(GameButton* blue = game->getButtonBLUE()) {
-                    blue->addMovement(calculateDelta(lastKnobValues.blue, values.blue));
+                    if(lastKnobValues.blue!=values.blue)
+                        blue->addMovement(calculateDelta(lastKnobValues.blue, values.blue));
+                    if(values.blueClicked)
+                        blue->clicked();
                 }
             }
         }

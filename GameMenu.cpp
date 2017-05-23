@@ -12,15 +12,19 @@ GameMenu::GameMenu() :
 }
 std::vector<Shape*> GameMenu::getShapes()
 {
-    std::vector<Shape*> result;
-    {
+
+    if(currentGame != nullptr) {
+        return currentGame->getShapes();
+    }
+    else {
+        std::vector<Shape*> result;
         std::unique_lock<std::mutex> lk{shapeMutex};
         for(const ShapeMenuItem& item: items) {
             result.push_back(item.cloneNew());
         }
-        //result.push_back(new ShapeText("BLE", Color::YELLOW, 10,10));
+        return result;
     }
-    return result;
+
 }
 
 bool GameMenu::tick()
@@ -29,22 +33,43 @@ bool GameMenu::tick()
     switchCooldown.cool(deltaT);
     std::unique_lock<std::mutex> lk{shapeMutex};
 
-    if(activeItem != -1) {
-        int movement = middleButton.moveDelta();
-        if(movement!=0 && switchCooldown.isCold()) {
-            switchCooldown.start();
-            int nextActiveItem = movement>0? activeItem+1:activeItem-1;
-            if(nextActiveItem>=items.size())
-                nextActiveItem = 0;
-            if(nextActiveItem<0)
-                nextActiveItem = items.size()-1;
-            items[activeItem].setSelected(false);
-            items[nextActiveItem].setSelected(true);
-            activeItem = nextActiveItem;
+    if(currentGame != nullptr) {
+        bool result = currentGame->tick();
+        if(!result) {
+            currentGame = nullptr;
+            // clear any movement info
+            middleButton.isClicked();
+            middleButton.moveDelta();
+        }
+        else {
+            return true;
+        }
+    }
 
-            for(size_t i=0, l=items.size(); i<l; ++i) {
-                int offset = (i-activeItem)*44;
-                items[i].setY(offset+GAME_HEIGHT/2-22);
+    if(activeItem != -1) {
+        // handle clicks first
+        if(middleButton.isClicked()) {
+            currentGame = items[activeItem].action;
+            if(currentGame == nullptr)
+                return false;
+        }
+        else {
+            int movement = middleButton.moveDelta();
+            if(movement!=0 && switchCooldown.isCold()) {
+                switchCooldown.start();
+                int nextActiveItem = movement>0? activeItem+1:activeItem-1;
+                if(nextActiveItem>=items.size())
+                    nextActiveItem = 0;
+                if(nextActiveItem<0)
+                    nextActiveItem = items.size()-1;
+                items[activeItem].setSelected(false);
+                items[nextActiveItem].setSelected(true);
+                activeItem = nextActiveItem;
+
+                for(size_t i=0, l=items.size(); i<l; ++i) {
+                    int offset = (i-activeItem)*44;
+                    items[i].setY(offset+GAME_HEIGHT/2-22);
+                }
             }
         }
     }
@@ -81,10 +106,7 @@ GameButton*GameMenu::getButtonRED()
 GameButton*GameMenu::getButtonBLUE()
 {
     std::unique_lock<std::mutex> lk{shapeMutex};
-    if(currentGame==nullptr) {
-        return &middleButton;
-    }
-    else {
+    if(currentGame!=nullptr) {
         return currentGame->getButtonBLUE();
     }
     return nullptr;
@@ -94,7 +116,10 @@ GameButton*GameMenu::getButtonGREEN()
 {
     std::unique_lock<std::mutex> lk{shapeMutex};
     if(currentGame!=nullptr) {
-        return currentGame->getButtonRED();
+        return currentGame->getButtonGREEN();
+    }
+    else {
+        return &middleButton;
     }
     return nullptr;
 }
