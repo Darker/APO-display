@@ -37,9 +37,9 @@ std::vector<Shape*> Game::getShapes()
     // LOCK MUTEX!
     // copy every shape into new array and return that array
     shapeMutex.lock();
-    returnArray.push_back(new ShapeText(pl1_str, Color::RED, GAME_WIDTH/2 - 30, 30, "diablo.ttf"));
-    //returnArray.push_back(new ShapeText("SEND NUDES", Color::BLUE565, GAME_WIDTH/2-50, 30, "diablo.ttf"));
-    returnArray.push_back(new ShapeText(pl2_str, Color::RED, GAME_WIDTH/2 + 30, 30, "diablo.ttf"));
+    //returnArray.push_back(new ShapeText(pl1_str, Color::RED, GAME_WIDTH/2 - 30, 30, "diablo.ttf"));
+    returnArray.push_back(new ShapeText("HAPPY BIRTHDAY", Color::BLUE565, GAME_WIDTH/2-50, 30, "diablo.ttf"));
+    //returnArray.push_back(new ShapeText(pl2_str, Color::RED, GAME_WIDTH/2 + 30, 30, "diablo.ttf"));
     returnArray.push_back(circle_2.cloneNew());
     returnArray.push_back(circle.cloneNew());
     returnArray.push_back(platform1.cloneNew());
