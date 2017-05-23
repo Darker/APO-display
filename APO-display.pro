@@ -17,7 +17,10 @@ CONFIG += c++11
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += _QT_COMPILE
-QMAKE_CXXFLAGS += -Wunused-parameter
+QMAKE_CXXFLAGS += -Wno-unused-variable
+QMAKE_CXXFLAGS += -Wno-unused-parameter
+QMAKE_CXXFLAGS += -Wno-reorder
+
 
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -59,8 +62,10 @@ SOURCES += \
     ShapeRectangleBorder.cpp \
     GameMenu.cpp \
     ShapeText.cpp \
-    libs/libs_impl.cpp \
-    Future.cpp
+    libs_impl.cpp \
+    Future.cpp \
+    ShapeMenuItem.cpp \
+    CooldownCalculator.cpp
 
 HEADERS += \
     Color.h \
@@ -99,7 +104,9 @@ HEADERS += \
     ShapeRectangleBorder.h \
     GameMenu.h \
     ShapeText.h \
-    Future.h
+    Future.h \
+    ShapeMenuItem.h \
+    CooldownCalculator.h
 
 FORMS += qt_stuff/MainWindow.ui \
     qt_stuff/SpinnerButton.ui

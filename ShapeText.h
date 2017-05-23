@@ -5,6 +5,8 @@
 #include <string>
 #include <future>
 #include <memory>
+#include <map>
+
 //#include "Future.h"
 typedef std::future<stbtt_fontinfo> font_future;
 typedef std::shared_future<stbtt_fontinfo> font_future_shared;
@@ -16,10 +18,12 @@ public:
 
     double x;
     double y;
+    double scale;
     Color color;
 
     virtual void render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHeight) const override;
     virtual Shape* cloneNew() const override;
+    virtual void boundingRect(float& x0, float& y0, float& x1, float& y1) const;
 
     class FontCache {
     public:

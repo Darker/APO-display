@@ -24,7 +24,11 @@ int mainQt(int argc, char *argv[]) {
     w->show();
     GameInterface* game = nullptr;
 #ifdef _JAKUBX
-    game = new GameMenu();
+    GameMenu* menu = new GameMenu();
+    game = menu;
+    menu->addEntry("Intersections", new GameIntersectionTest());
+    menu->addEntry("Pong", new Game());
+    menu->addEntry("Car", new GameJakub());
 #else
     game = new Game();
 #endif
