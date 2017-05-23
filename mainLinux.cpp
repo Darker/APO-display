@@ -19,6 +19,7 @@
 #include "GameButton.h"
 
 #include <cmath>
+#include <cstring>
 // for knob value struct
 #include "display_magic.h"
 
