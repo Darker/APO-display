@@ -13,6 +13,7 @@ ShapeText::ShapeText(const std::string& text, const Color& color, double x, doub
     , x(x)
     , y(y)
     , fontPath(fontPath)
+    , scale(40.0)
 {
     GLOBAL_CACHE.getFontLater(fontPath);
 }
@@ -28,7 +29,7 @@ void ShapeText::render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHe
 
     if(font.numGlyphs > 0) {
         int w, h;
-        const int scale_y = 40;
+        const int scale_y = (int)std::round(scale);
         // offset increases as you print individual letters
         float xoffset = x;
         // offset increases if there's a newline (to be implemented @TODO)
@@ -55,18 +56,18 @@ void ShapeText::render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHe
             for(int cy=0; cy<h; ++cy) {
                 if(cy+y>=pixmapHeight)
                     break;
-                for(int cx=0; cx<h; ++cx) {
+                for(int cx=0; cx<w; ++cx) {
                     if(cx+x>=pixmapWidth)
                         break;
                     const unsigned char opacity = bitmap[cy*w+cx];
                     if(opacity<1)
                         continue;
-                    blendPixel(pixmap, color, cx+xoffset+x0, cy+y+y0, opacity, pixmapWidth);
+                    blendPixel(pixmap, color, cx+xoffset+x0, cy+y+y0+baseline, opacity, pixmapWidth);
                     //setPixel(pixmap, color, cx+x, cy+y, pixmapWidth);
-                    std::cout<< (" .:ioVM@"[bitmap[cy*w+cx]>>5]);
+                    //std::cout<< (" .:ioVM@"[bitmap[cy*w+cx]>>5]);
 
                 }
-                std::cout<<('\n');
+                //std::cout<<('\n');
             }
             //STBTT_free(bitmap, font.userdata);
             ((void)(font.userdata),free(bitmap));
@@ -79,6 +80,43 @@ void ShapeText::render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHe
 Shape*ShapeText::cloneNew() const
 {
     return new ShapeText(*this);
+}
+
+void ShapeText::boundingRect(float& x0, float& y0, float& x1, float& y1) const
+{
+    const stbtt_fontinfo font = GLOBAL_CACHE.getFont(fontPath);
+    if(font.numGlyphs > 0) {
+        const int scale_y = (int)std::round(scale);
+        // offset increases as you print individual letters
+        int minx = 1e8;
+        int miny = 1e8;
+        int maxx = 0;
+        int maxy = 0;
+        int xoffset = 0;
+
+        for(int i=0, l=text.length(); i<l; ++i) {
+            const char character = text[i];
+
+            // copied from example codes
+            int cx0,cy0,cx1,cy1;
+            if(character==' ') {
+                //cx0 = 0;
+            }
+            else {
+                float x_shift = xoffset - (float) std::floor(xoffset);
+                stbtt_GetCodepointBitmapBoxSubpixel(&font, character, scale,scale,x_shift,0, &cx0,&cy0,&cx1,&cy1);
+            }
+            if(minx>cx0)
+                minx=cx0;
+            if(miny>cy0)
+                miny=cy0;
+            if(maxx>cx1)
+                maxx=cx1;
+            if(maxy>cy1)
+                maxy=cy1;
+        }
+    }
+    return;
 }
 
 stbtt_fontinfo ShapeText::FontCache::getFont(const std::string& fontPath)
@@ -130,6 +168,10 @@ stbtt_fontinfo ShapeText::FontCache::loadFont(const std::string& fontPath)
         unsigned char* newBuffer = (unsigned char*)malloc(buffer.size()*sizeof(char));
         std::memcpy(newBuffer, bufferC, buffer.size()*sizeof(char));
         stbtt_InitFont(&font, newBuffer, stbtt_GetFontOffsetForIndex(bufferC,0));
+    }
+    else {
+        std::cout<<"ERROR: cannot open font "<<fontPath<<"\n";
+        exit(0);
     }
 
     return font;

@@ -8,6 +8,7 @@ const Color Color::GRAY(128, 128, 128);
 const Color Color::WHITE(255, 255, 255);
 const Color Color::RED(255, 0, 0);
 const Color Color::GREEN(0, 128, 0);
+const Color Color::BLACK(0, 0, 0);
 
 Color::Color(const uint16_t rgb565) 
     : r((((rgb565&RED565)>>11)*255)/31)
@@ -24,6 +25,7 @@ Color Color::operator+(const uint16_t color) const
     result.r+=r;
     result.g+=g;
     result.b+=b;
+    return result;
 }
 
 uint32_t Color::qRGBValue() const
