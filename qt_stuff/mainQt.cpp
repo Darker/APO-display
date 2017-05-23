@@ -29,6 +29,7 @@ int mainQt(int argc, char *argv[]) {
     menu->addEntry("Intersections", new GameIntersectionTest());
     menu->addEntry("Pong", new Game());
     menu->addEntry("Car", new GameJakub());
+    menu->addEntry("Exit", nullptr);
 #else
     game = new Game();
 #endif

@@ -1,6 +1,11 @@
 #include "mainFunctions.h"
 #include "defines.h"
 #include "Game.h"
+#include "GameMenu.h"
+#include "GameIntersectionTest.h"
+#include "GameJakub.h"
+
+
 #include "DisplayRenderer.h"
 #include <stddef.h>
 #include <thread>
@@ -12,6 +17,7 @@
 #endif
 #include "GameJakub.h"
 #include "GameButton.h"
+
 #include <cmath>
 // for knob value struct
 #include "display_magic.h"
@@ -25,7 +31,10 @@ void runGame() {
     const uint32_t minInterval = 20;
     while(true) {
         const std::chrono::steady_clock::time_point tick_start = std::chrono::steady_clock::now();
-        game->tick();
+        if(!game->tick()) {
+            std::cout<<"Game decided to end.\n";
+            exit(0);
+        }
         uint32_t tickDuration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - tick_start).count();
         // notify that next frame can be rendered
         waitForFrame.unlock();
@@ -124,12 +133,22 @@ void readInput() {
 std::thread drawThread;
 std::thread gameThread;
 std::thread inputThread;
+
+bool prasoHraJakub = false;
 void startLinuxRenderer() {
-#ifdef _JAKUBX
-    game = new GameJakub();
-#else
-    game = new Game();
-#endif
+
+    if(prasoHraJakub) {
+        GameMenu* menu = new GameMenu();
+        game = menu;
+        menu->addEntry("Intersections", new GameIntersectionTest());
+        menu->addEntry("Pong", new Game());
+        menu->addEntry("Car", new GameJakub());
+        menu->addEntry("Exit", nullptr);
+    }
+    else {
+        game = new Game();
+    }
+
     inputThread = std::thread(readInput);
     drawThread = std::thread(paintGame);
     gameThread = std::thread(runGame);
@@ -144,6 +163,8 @@ void exitLinuxRenderer() {
 
 int mainLinux(int argc, char *argv[])
 {
+    prasoHraJakub = argc>1 && (strcmp(argv[1], "jakub")==0);
+
     startLinuxRenderer();
     exitLinuxRenderer();
     return 0;

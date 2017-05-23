@@ -88,7 +88,7 @@ bool GameJakub::tick()
     for(size_t i=0, l=obstructions.size(); i<l; ++i) {
         if(car.intersects(obstructions[i])) {
             std::cout<<"You crashed the car along with your parents, wife and kids. Nobody survived.\n";
-            exit(1);
+            return false;
             //car.setColor(Color(240, 200, 0));
         }
         obstructions[i].x -= deltaT*19*speed;
