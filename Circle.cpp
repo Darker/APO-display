@@ -3,6 +3,7 @@
 #include "defines.h"
 #include "ShapeRendering.h"
 #include "Platform.h"
+#include <cmath>
 
 Circle::Circle() : Shape()
 {
@@ -65,7 +66,7 @@ int Circle::isPlayable(){
     return 0;
 }
 bool Circle::intersect(const Circle& ball){
-    if (pow((ball.x - x),2.0) + pow((y-ball.y),2.0) <= pow((radius + ball.radius),2.0))
+    if (std::pow((ball.x - x),2.0) + std::pow((y-ball.y),2.0) <= std::pow((radius + ball.radius),2.0))
         return true;
     return false;
 
