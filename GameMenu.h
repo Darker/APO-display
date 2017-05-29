@@ -4,6 +4,7 @@
 #include "threading.h"
 #include "ShapeMenuItem.h"
 #include "CooldownCalculator.h"
+#include <memory>
 
 class GameMenu : public GameInterface
 {
@@ -22,13 +23,17 @@ protected:
     GameButton middleButton;
     CooldownCalculator switchCooldown;
 
-    GameInterface* currentGame;
+    std::shared_ptr<GameInterface> currentGame;
 public:
     virtual GameButton* getButtonRED() override;
     virtual GameButton* getButtonBLUE() override;
     virtual GameButton* getButtonGREEN() override;
     virtual GameButton* getButtonP1() override;
     virtual GameButton* getButtonP2() override;
+
+    // GameInterface interface
+public:
+    virtual bool render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHeight) override;
 };
 
 #endif // GAMEMENU_H

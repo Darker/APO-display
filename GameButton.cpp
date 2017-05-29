@@ -15,9 +15,9 @@ bool GameButton::peekClicked() const
 
 bool GameButton::isClicked()
 {
-    bool is = isClicked_;
+    const bool is = isClicked_;
     isClicked_ = false;
-    return isClicked_;
+    return is;
 }
 
 int64_t GameButton::peekMoveOffset() const

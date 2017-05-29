@@ -40,23 +40,35 @@ class parlcd_KnobValues {
   // need to move bitmask to desired byte
   // perform & operation and move the result back to 1st byte
     parlcd_KnobValues(const uint32_t rawData) :
-        red  ((rawData&0x00FF0000)>>16)
-      , green((rawData&0x0000FF00)>>8)
-      , blue ((rawData&0x000000FF))
+        red      ((rawData&0x00FF0000)>>16)
+      , green    ((rawData&0x0000FF00)>>8)
+      , blue     ((rawData&0x000000FF))
+      , redClicked(rawData&0x04000000)
+      , greenClicked(rawData&0x02000000)
+      , blueClicked (rawData&0x01000000)
     {}
     parlcd_KnobValues() :
         red(0)
       , green(0)
       , blue(0)
+      , redClicked(false)
+      , greenClicked(false)
+      , blueClicked(false)
     {}
     parlcd_KnobValues(const uint8_t r, const uint8_t g, const uint8_t b) :
         red(r)
       , green(g)
       , blue(b)
+      , redClicked(false)
+      , greenClicked(false)
+      , blueClicked(false)
     {}
     uint8_t red;
     uint8_t blue;
     uint8_t green;
+    bool redClicked;
+    bool blueClicked;
+    bool greenClicked;
 };
 
 parlcd_KnobValues parlcd_knob_values(unsigned char *parlcd_mem_base);

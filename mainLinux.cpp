@@ -1,6 +1,11 @@
 #include "mainFunctions.h"
 #include "defines.h"
 #include "Game.h"
+#include "GameMenu.h"
+#include "GameIntersectionTest.h"
+#include "GameJakub.h"
+
+
 #include "DisplayRenderer.h"
 #include <stddef.h>
 #include <thread>
@@ -12,7 +17,9 @@
 #endif
 #include "GameJakub.h"
 #include "GameButton.h"
+
 #include <cmath>
+#include <cstring>
 // for knob value struct
 #include "display_magic.h"
 
@@ -22,10 +29,13 @@ DisplayRenderer renderer;
 WaitMutex waitForFrame;
 // this thread calls game ticks
 void runGame() {
-    const uint32_t minInterval = 20;
+    const uint32_t minInterval = 15;
     while(true) {
         const std::chrono::steady_clock::time_point tick_start = std::chrono::steady_clock::now();
-        game->tick();
+        if(!game->tick()) {
+            std::cout<<"Game decided to end.\n";
+            exit(0);
+        }
         uint32_t tickDuration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - tick_start).count();
         // notify that next frame can be rendered
         waitForFrame.unlock();
@@ -42,12 +52,14 @@ void paintGame() {
     pixmap.resize(GAME_WIDTH*GAME_HEIGHT);
     while(true) {
         std::fill(pixmap.begin(), pixmap.end(), 0);
-
-        std::vector<Shape*> shapes = game->getShapes();
-        for(size_t i=0, l=shapes.size(); i<l; ++i) {
-            shapes[i]->render(pixmap, GAME_WIDTH, GAME_HEIGHT);
-            delete shapes[i];
+        if(!game->render(pixmap, GAME_WIDTH, GAME_HEIGHT)) {
+            std::vector<Shape*> shapes = game->getShapes();
+            for(size_t i=0, l=shapes.size(); i<l; ++i) {
+                shapes[i]->render(pixmap, GAME_WIDTH, GAME_HEIGHT);
+                delete shapes[i];
+            }
         }
+
         renderer.updatePixmap(pixmap);
         // wait for next frame
         waitForFrame.wait();
@@ -79,7 +91,6 @@ void readInput() {
     //std::cout<<"Waiting for display init!\n";
     //renderer.waitForPalcdInit.wait();
     unsigned char* button_mem_base = (unsigned char*)map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
-    int reddeltasum = 0;
     //std::cout<<"Waiting for display done, pointer: "<<std::hex<<(uint32_t)parlcd_mem_base<<"\n";
     while(true) {
         //std::cout<<"Reading buttons: (wait) ";
@@ -91,28 +102,28 @@ void readInput() {
         }
         // every other iteration calculates delta movement
         else {
-            if(lastKnobValues.red!=values.red) {
-                //std::cout<<"Red moved!\n";
+            if(lastKnobValues.red!=values.red || values.redClicked) {
                 if(GameButton* red = game->getButtonRED()) {
-                    const int delta = calculateDelta(lastKnobValues.red, values.red);
-                    reddeltasum+=delta;
-                    red->addMovement(delta);
-                    //std::cout<<"Red updated, sum: "<<reddeltasum<<"\n";
+                    if(lastKnobValues.red!=values.red)
+                        red->addMovement(calculateDelta(lastKnobValues.red, values.red));
+                    if(values.redClicked)
+                        red->clicked();
                 }
             }
-            else {
-                //std::cout<<"Red did not change!\n";
-            }
-            if(lastKnobValues.green!=values.green) {
-                //std::cout<<"green moved!\n";
+            if(lastKnobValues.green!=values.green || values.greenClicked) {
                 if(GameButton* green = game->getButtonGREEN()) {
-                    green->addMovement(calculateDelta(lastKnobValues.green, values.green));
-                    //std::cout<<"green updated!\n";
+                    if(lastKnobValues.green!=values.green)
+                        green->addMovement(calculateDelta(lastKnobValues.green, values.green));
+                    if(values.greenClicked)
+                        green->clicked();
                 }
             }
-            if(lastKnobValues.blue!=values.blue) {
+            if(lastKnobValues.blue!=values.blue || values.blueClicked) {
                 if(GameButton* blue = game->getButtonBLUE()) {
-                    blue->addMovement(calculateDelta(lastKnobValues.blue, values.blue));
+                    if(lastKnobValues.blue!=values.blue)
+                        blue->addMovement(calculateDelta(lastKnobValues.blue, values.blue));
+                    if(values.blueClicked)
+                        blue->clicked();
                 }
             }
         }
@@ -125,12 +136,22 @@ void readInput() {
 std::thread drawThread;
 std::thread gameThread;
 std::thread inputThread;
+
+bool prasoHraJakub = false;
 void startLinuxRenderer() {
-#ifdef _JAKUBX
-    game = new GameJakub();
-#else
-    game = new Game();
-#endif
+
+    if(prasoHraJakub) {
+        GameMenu* menu = new GameMenu();
+        game = menu;
+        menu->addEntry("Intersections", new GameIntersectionTest());
+        menu->addEntry("Pong", new Game());
+        menu->addEntry("Car", new GameJakub());
+        menu->addEntry("Exit", nullptr);
+    }
+    else {
+        game = new Game();
+    }
+
     inputThread = std::thread(readInput);
     drawThread = std::thread(paintGame);
     gameThread = std::thread(runGame);
@@ -145,6 +166,8 @@ void exitLinuxRenderer() {
 
 int mainLinux(int argc, char *argv[])
 {
+    prasoHraJakub = argc>1 && (strcmp(argv[1], "jakub")==0);
+
     startLinuxRenderer();
     exitLinuxRenderer();
     return 0;

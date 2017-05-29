@@ -7,7 +7,6 @@
 #include "defines.h"
 Game::Game()
     : circle()
-    , circle_2()
     , platform1(5,GAME_HEIGHT/2,GAME_WIDTH/25,GAME_HEIGHT/4)
     , platform2(GAME_WIDTH-5,GAME_HEIGHT/2,GAME_WIDTH/25,GAME_HEIGHT/4)
     , mt(rd())
@@ -19,7 +18,6 @@ Game::Game()
     platform2 = Platform(GAME_WIDTH-5-GAME_WIDTH/25, (double) position(mt),GAME_WIDTH/25,GAME_HEIGHT/4);
 
     circle = Circle((double)(GAME_WIDTH/2), (double)(GAME_HEIGHT/2), (double)(speed(mt)), (double)(speed(mt)), (int)10);
-    circle_2 = Circle((double)(GAME_WIDTH/2.5), (double)(GAME_HEIGHT/2), (double)(speed(mt)), (double)(speed(mt)), (int)10, Color(0,255,0));
     int player1_score=0,player2_score=0;
     std::string pl1_str;
     std::string pl2_str ;
@@ -37,10 +35,8 @@ std::vector<Shape*> Game::getShapes()
     // LOCK MUTEX!
     // copy every shape into new array and return that array
     shapeMutex.lock();
-    //returnArray.push_back(new ShapeText(pl1_str, Color::RED, GAME_WIDTH/2 - 30, 30, "diablo.ttf"));
-    returnArray.push_back(new ShapeText("HAPPY BIRTHDAY", Color::BLUE565, GAME_WIDTH/2-100, 30, "diablo.ttf"));
-    //returnArray.push_back(new ShapeText(pl2_str, Color::RED, GAME_WIDTH/2 + 30, 30, "diablo.ttf"));
-    returnArray.push_back(circle_2.cloneNew());
+    returnArray.push_back(new ShapeText(pl1_str, Color::RED, GAME_WIDTH/2 - 30, 30, "diablo.ttf"));
+    returnArray.push_back(new ShapeText(pl2_str, Color::RED, GAME_WIDTH/2 + 30, 30, "diablo.ttf"));
     returnArray.push_back(circle.cloneNew());
     returnArray.push_back(platform1.cloneNew());
     returnArray.push_back(platform2.cloneNew());
@@ -69,7 +65,7 @@ bool Game::tick()
     }
 
     else if(circle.isPlayable() == 1){
-        std::uniform_real_distribution<double> speed(-100, 100);
+        std::uniform_real_distribution<double> speed(0.0, 100);
             player1_score++;
             circle.x=GAME_WIDTH/2;
             circle.y = GAME_HEIGHT/2;
@@ -77,26 +73,7 @@ bool Game::tick()
             circle.vy =speed(this->rd) ;//(speed(mt));
         }
 
-
-
     circle.move(deltaT);
-    circle_2.move(deltaT);
-
-    if (circle.intersect(circle_2)){
-
-
-        //circle.bounce_ceiling();
-        circle.bounce_platform();
-
-        circle_2.bounce_platform();
-       // circle_2.bounce_ceiling();
-
-
-    }
-
-
-
-    //if (circle_2.intersect(circle))
 
     platform1.y += button1.moveDelta();
     platform2.y += button3.moveDelta();
@@ -115,6 +92,25 @@ bool Game::tick()
         circle.bounce_ceiling();
         //circle.bounce_platform();
     }
+    shapeMutex.unlock();
+    return true;
+}
+
+bool Game::render(std::vector<Color> &pixmap, int pixmapWidth, int pixmapHeight)
+{
+//    ShapeText pl1sc;
+//    ShapeText pl2sc;
+    // LOCK MUTEX!
+    // copy every shape into new array and return that array
+    shapeMutex.lock();
+//    pl1sc = new ShapeText(pl1_str, Color::RED, GAME_WIDTH/2 - 30, 30, "diablo.ttf"));
+//    pl2sc = new ShapeText(pl2_str, Color::RED, GAME_WIDTH/2 - 30, 30, "diablo.ttf"));
+    ShapeText(pl1_str, Color::RED, GAME_WIDTH/2 - 30, 30, "diablo.ttf").render(pixmap, pixmapWidth, pixmapHeight);
+    ShapeText(pl2_str, Color::RED, GAME_WIDTH/2 + 30, 30, "diablo.ttf").render(pixmap, pixmapWidth, pixmapHeight);
+
+    (circle).render(pixmap, pixmapWidth, pixmapHeight);
+    (platform1).render(pixmap, pixmapWidth, pixmapHeight);
+    (platform2).render(pixmap, pixmapWidth, pixmapHeight);
     shapeMutex.unlock();
     return true;
 }

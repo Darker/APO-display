@@ -10,6 +10,7 @@ class Pentagram;
 #include "Pentagram.h"
 #include "GameInterface.h"
 #include "GameButton.h"
+#include "ShapeText.h"
 
 #include <mutex>
 #include <random>
@@ -51,6 +52,10 @@ protected:
 
     std::random_device rd;
     std::mt19937 mt;
+
+    // GameInterface interface
+public:
+    bool render(std::vector<Color> &pixmap, int pixmapWidth, int pixmapHeight);
 };
 
 #endif // GAME_H

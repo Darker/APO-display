@@ -29,6 +29,7 @@ int mainQt(int argc, char *argv[]) {
     menu->addEntry("Intersections", new GameIntersectionTest());
     menu->addEntry("Pong", new Game());
     menu->addEntry("Car", new GameJakub());
+    menu->addEntry("Exit", nullptr);
 #else
     game = new Game();
 #endif
@@ -39,9 +40,9 @@ int mainQt(int argc, char *argv[]) {
     QTimer renderLoop;
     QObject::connect(&renderLoop, &QTimer::timeout, signalForward, &GameSignalsSlots::doRenderTick);
     renderLoop.start(33);
-    QTimer gameLoop;
+    //QTimer gameLoop;
     QObject::connect(&renderLoop, &QTimer::timeout, signalForward, &GameSignalsSlots::doGameTick);
-    gameLoop.start(10);
+    //gameLoop.start(33);
 
     //if(GameJakub* testGame = dynamic_cast<GameJakub*>(game)) {
     QObject::connect(w, &MainWindow::buttonMoved, [game](const int index, const qint16 offset) {
@@ -55,7 +56,7 @@ int mainQt(int argc, char *argv[]) {
             button->addMovement(offset);
         }
     });
-    QObject::connect(w, &MainWindow::buttonMoved, [game](const int index) {
+    QObject::connect(w, &MainWindow::buttonClicked, [game](const int index) {
         GameButton* button = nullptr;
         switch(index) {
         case 0: button = game->getButtonRED();break;
