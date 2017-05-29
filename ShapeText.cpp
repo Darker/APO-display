@@ -101,6 +101,7 @@ void ShapeText::boundingRect(float& x0, float& y0, float& x1, float& y1) const
             int cx0,cy0,cx1,cy1;
             if(character==' ') {
                 //cx0 = 0;
+                xoffset+=(scale_y*4)/5;
             }
             else {
                 float x_shift = xoffset - (float) std::floor(xoffset);
@@ -110,13 +111,22 @@ void ShapeText::boundingRect(float& x0, float& y0, float& x1, float& y1) const
                 minx=cx0;
             if(miny>cy0)
                 miny=cy0;
-            if(maxx>cx1)
+            if(maxx<cx1)
                 maxx=cx1;
-            if(maxy>cy1)
+            if(maxy<cy1)
                 maxy=cy1;
         }
+        x0 = minx;
+        y0 = miny;
+        x1 = maxx;
+        y1 = maxy;
     }
     return;
+}
+
+void ShapeText::setText(const std::string& value)
+{
+    text = value;
 }
 
 stbtt_fontinfo ShapeText::FontCache::getFont(const std::string& fontPath)

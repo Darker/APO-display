@@ -12,12 +12,13 @@ GameJakub::GameJakub()
     , drawY(GAME_HEIGHT/2.0)
     , car(ShapeCar::TRUNK_LENGTH/2.0+1, GAME_HEIGHT/2, Color(0,100,255))
     , mt(rd())
-    , testRect(GAME_WIDTH-20,GAME_HEIGHT-20,20, 20)
     , shapesPerSec(2.5)
     , speed(1)
     , shapesToGenerate(1)
+    , gameOver("GAME OVER", Color::RED, 0, 40, "diablo.ttf")
+    , scoreInfo("Travelled: ", Color::YELLOW, 50, 100)
 {
-
+    reset();
 }
 
 std::vector<Shape*> GameJakub::getShapes()
@@ -43,33 +44,32 @@ std::vector<Shape*> GameJakub::getShapes()
 bool GameJakub::render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHeight)
 {
     std::unique_lock<std::mutex> lk{shapeMutex};
-    car.render(pixmap, pixmapWidth, pixmapHeight);
-    for(size_t i=0, l=obstructions.size(); i<l; ++i) {
-        obstructions[i].render(pixmap, pixmapWidth, pixmapHeight);
+    if(!over) {
+        car.render(pixmap, pixmapWidth, pixmapHeight);
+        for(size_t i=0, l=obstructions.size(); i<l; ++i) {
+            obstructions[i].render(pixmap, pixmapWidth, pixmapHeight);
+        }
     }
+    else {
+
+    }
+
 }
 
 bool GameJakub::tick()
 {
     const double deltaT = sinceLastTick()/1000.0;
     shapeMutex.lock();
-    //testRect.x += deltaT*5;
-    //testRect.y += deltaT*5;
-    /*circle.x += button1.moveDelta();
-    circle.y += button3.moveDelta();
-    circle.rotation += (button2.moveDelta()*GAME_PI*2)/256.0;
-    if(circle.r<5)
-        circle.r = 5;*/
-//    circle.rotation += (button2.moveDelta()*GAME_PI*2.0)/100.0;;
-//    circle.rotation += (deltaT)*GAME_PI/20.0;
+    if(over) {
+        int travInt = (int)std::round(travelled);
+        scoreInfo.setText(std::string("Travelled: ")+std::to_string(travInt));
+        float x0,y0, x1,y1;
+        scoreInfo.boundingRect(x0,y0, x1,y1);
+        scoreInfo.x = (GAME_WIDTH-x1+x0)/2;
 
-//    double newDrawX = drawX + button1.moveDelta()/2.0;
-//    double newDrawY = drawY + button3.moveDelta()/2.0;
-//    if(newDrawX!=drawX || newDrawY!=drawY) {
-//        line(paintArea.drawArea, Color::YELLOW, drawX, drawY, newDrawX, newDrawY, paintArea.width);
-//        drawX = newDrawX;
-//        drawY = newDrawY;
-//    }
+        return !button2.clicked();
+    }
+
     double cary = car.getCy() + button2.moveDelta();
     static const double carBorder = ShapeCar::TRUNK_WIDTH+ShapeCar::WHEEL_WIDTH;
 
@@ -82,6 +82,8 @@ bool GameJakub::tick()
     shapesPerSec += deltaT/200.0;
     speed += deltaT/20.0;
     shapesToGenerate += shapesPerSec*deltaT;
+    const double movement = deltaT*19*speed;
+    travelled += movement;
 
     while(shapesToGenerate>=1) {
         std::uniform_real_distribution<double> position(0.0, GAME_HEIGHT);
@@ -96,11 +98,14 @@ bool GameJakub::tick()
     car.setColor(Color(0,100,255));
     for(size_t i=0, l=obstructions.size(); i<l; ++i) {
         if(car.intersects(obstructions[i])) {
-            std::cout<<"You crashed the car along with your parents, wife and kids. Nobody survived.\n";
-            return false;
+            //std::cout<<"You crashed the car along with your parents, wife and kids. Nobody survived.\n";
+            //return false;
             //car.setColor(Color(240, 200, 0));
+            over = true;
+            obstructions.clear();
+            break;
         }
-        obstructions[i].x -= deltaT*19*speed;
+        obstructions[i].x -= movement;
         if((obstructions[i].x+obstructions[i].width) < 0) {
             obstructions.erase(obstructions.begin() + i);
             i--;
@@ -110,5 +115,18 @@ bool GameJakub::tick()
 
     shapeMutex.unlock();
     return true;
+}
+
+void GameJakub::reset()
+{
+    car.setCy(GAME_HEIGHT/2);
+    speed = 1;
+    shapesPerSec = 2.5;
+    shapesToGenerate = 1;
+    over = false;
+    travelled = 0;
+    float x0,y0, x1,y1;
+    gameOver.boundingRect(x0,y0, x1,y1);
+    gameOver.x = (GAME_WIDTH-x1+x0)/2;
 }
 

@@ -20,6 +20,8 @@ public:
     virtual bool render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHeight) {
         return false;
     }
+    // Reset game to the beginning state (what that means is implementation defined)
+    virtual void reset() {}
     virtual ~GameInterface(){}
     // Return pointer to RED/BLUE/GREEN spinner
     // button

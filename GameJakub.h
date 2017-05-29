@@ -6,6 +6,7 @@
 #include "ShapePixmap.h"
 #include "ShapeCar.h"
 #include "threading.h"
+#include "ShapeText.h"
 #include <random>
 class GameJakub : public GameInterface
 {
@@ -23,13 +24,15 @@ public:
     virtual GameButton* getButtonRED() override {return &button1;}
     virtual GameButton* getButtonBLUE() override {return &button3;}
     virtual GameButton* getButtonGREEN() override {return &button2;}
+
+    virtual void reset();
+
 protected:
     Pentagram circle;
     ShapePixmap paintArea;
     ShapeCar car;
     std::vector<Rectangle> obstructions;
 
-    Rectangle testRect;
     std::mutex shapeMutex;
     double drawX;
     double drawY;
@@ -42,6 +45,14 @@ protected:
     double shapesPerSec;
     // Game speed multiplier
     double speed;
+    // true if game has ended
+    // if true, any button press causes game to quit
+    bool over;
+    // distance travelled
+    double travelled;
+    // game over texts
+    ShapeText gameOver;
+    ShapeText scoreInfo;
 
     // How many shapes need to be generated
     // this increments with delta time
