@@ -16,6 +16,10 @@ public:
     // one game tick
     // returns false if game has ended
     virtual bool tick() = 0;
+    // returns true if rendering occured
+    virtual bool render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHeight) {
+        return false;
+    }
     virtual ~GameInterface(){}
     // Return pointer to RED/BLUE/GREEN spinner
     // button

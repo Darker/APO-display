@@ -1,11 +1,25 @@
 #include "mainFunctions.h"
 #ifdef _QT_COMPILE
-
-int main(int argc, char *argv[])
+#include <iostream>
+using namespace std;
+void func(int x)
 {
-    return mainQt(argc, argv);
-    //return mainQtLinux(argc, argv);
+    cout << x ;
 }
+int main(int argc, const char * argv[]) {
+
+    void (*n)(int);
+    n = &func;
+    (*n)( 5 );
+    n( 8 );
+    return 0;
+}
+//int main(int argc, char *argv[])
+//{
+
+//    return mainQt(argc, argv);
+//    //return mainQtLinux(argc, argv);
+//}
 #else
 #include "defines.h"
 int main(int argc, char *argv[])

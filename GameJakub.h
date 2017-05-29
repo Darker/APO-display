@@ -50,6 +50,10 @@ protected:
     // ammount of shapes is generated
     double shapesToGenerate;
 
+
+    // GameInterface interface
+public:
+    virtual bool render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHeight) override;
 };
 
 #endif // GAMEJAKUB_H

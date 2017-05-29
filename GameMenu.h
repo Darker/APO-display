@@ -30,6 +30,10 @@ public:
     virtual GameButton* getButtonGREEN() override;
     virtual GameButton* getButtonP1() override;
     virtual GameButton* getButtonP2() override;
+
+    // GameInterface interface
+public:
+    virtual bool render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHeight) override;
 };
 
 #endif // GAMEMENU_H

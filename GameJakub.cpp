@@ -40,6 +40,15 @@ std::vector<Shape*> GameJakub::getShapes()
     return result;
 }
 
+bool GameJakub::render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHeight)
+{
+    std::unique_lock<std::mutex> lk{shapeMutex};
+    car.render(pixmap, pixmapWidth, pixmapHeight);
+    for(size_t i=0, l=obstructions.size(); i<l; ++i) {
+        obstructions[i].render(pixmap, pixmapWidth, pixmapHeight);
+    }
+}
+
 bool GameJakub::tick()
 {
     const double deltaT = sinceLastTick()/1000.0;
@@ -102,3 +111,4 @@ bool GameJakub::tick()
     shapeMutex.unlock();
     return true;
 }
+

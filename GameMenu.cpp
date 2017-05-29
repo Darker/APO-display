@@ -4,7 +4,7 @@
 
 GameMenu::GameMenu() :
     GameInterface()
-  , switchCooldown(0.6)
+  , switchCooldown(0.3)
   , activeItem(-1)
   , currentGame(nullptr)
 {
@@ -26,7 +26,19 @@ std::vector<Shape*> GameMenu::getShapes()
     }
 
 }
-
+bool GameMenu::render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHeight)
+{
+    if(currentGame != nullptr) {
+        return currentGame->render(pixmap, pixmapWidth, pixmapHeight);
+    }
+    else {
+        std::unique_lock<std::mutex> lk{shapeMutex};
+        for(const ShapeMenuItem& item: items) {
+            item.render(pixmap, pixmapWidth, pixmapHeight);
+        }
+    }
+    return true;
+}
 bool GameMenu::tick()
 {
     const double deltaT = sinceLastTick()/1000.0;
@@ -58,7 +70,7 @@ bool GameMenu::tick()
             if(movement!=0 && switchCooldown.isCold()) {
                 switchCooldown.start();
                 int nextActiveItem = movement>0? activeItem+1:activeItem-1;
-                if(nextActiveItem>=items.size())
+                if(nextActiveItem>=(int)items.size())
                     nextActiveItem = 0;
                 if(nextActiveItem<0)
                     nextActiveItem = items.size()-1;
@@ -141,3 +153,5 @@ GameButton*GameMenu::getButtonP2()
     }
     return nullptr;
 }
+
+

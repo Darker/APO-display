@@ -40,9 +40,9 @@ int mainQt(int argc, char *argv[]) {
     QTimer renderLoop;
     QObject::connect(&renderLoop, &QTimer::timeout, signalForward, &GameSignalsSlots::doRenderTick);
     renderLoop.start(33);
-    QTimer gameLoop;
+    //QTimer gameLoop;
     QObject::connect(&renderLoop, &QTimer::timeout, signalForward, &GameSignalsSlots::doGameTick);
-    gameLoop.start(10);
+    //gameLoop.start(33);
 
     //if(GameJakub* testGame = dynamic_cast<GameJakub*>(game)) {
     QObject::connect(w, &MainWindow::buttonMoved, [game](const int index, const qint16 offset) {

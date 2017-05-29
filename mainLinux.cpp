@@ -29,7 +29,7 @@ DisplayRenderer renderer;
 WaitMutex waitForFrame;
 // this thread calls game ticks
 void runGame() {
-    const uint32_t minInterval = 20;
+    const uint32_t minInterval = 15;
     while(true) {
         const std::chrono::steady_clock::time_point tick_start = std::chrono::steady_clock::now();
         if(!game->tick()) {
@@ -52,12 +52,14 @@ void paintGame() {
     pixmap.resize(GAME_WIDTH*GAME_HEIGHT);
     while(true) {
         std::fill(pixmap.begin(), pixmap.end(), 0);
-
-        std::vector<Shape*> shapes = game->getShapes();
-        for(size_t i=0, l=shapes.size(); i<l; ++i) {
-            shapes[i]->render(pixmap, GAME_WIDTH, GAME_HEIGHT);
-            delete shapes[i];
+        if(!game->render(pixmap, GAME_WIDTH, GAME_HEIGHT)) {
+            std::vector<Shape*> shapes = game->getShapes();
+            for(size_t i=0, l=shapes.size(); i<l; ++i) {
+                shapes[i]->render(pixmap, GAME_WIDTH, GAME_HEIGHT);
+                delete shapes[i];
+            }
         }
+
         renderer.updatePixmap(pixmap);
         // wait for next frame
         waitForFrame.wait();
