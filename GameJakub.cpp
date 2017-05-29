@@ -67,7 +67,7 @@ bool GameJakub::tick()
         scoreInfo.boundingRect(x0,y0, x1,y1);
         scoreInfo.x = (GAME_WIDTH-x1+x0)/2;
 
-        return !button2.clicked();
+        return !button2.isClicked();
     }
 
     double cary = car.getCy() + button2.moveDelta();
