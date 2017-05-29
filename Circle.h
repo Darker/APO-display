@@ -7,6 +7,8 @@ class Circle : public Shape
 public:
     Circle();
 
+    Circle(double x, double y, double vx, double vy, int radius, Color c);
+
     Circle(double x,double y, double vx, double vy, int radius );
     //properties
 
@@ -15,7 +17,7 @@ public:
     double vx;
     double vy;
     int radius;
-
+    Color color;
 
 
     virtual ~Circle() {}
@@ -29,6 +31,7 @@ public:
     void bounce_platform();
     void  speed_up();
     int isPlayable();
+    bool intersect(const Circle& ball);
 
 };
 

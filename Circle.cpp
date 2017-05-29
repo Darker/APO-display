@@ -3,11 +3,21 @@
 #include "defines.h"
 #include "ShapeRendering.h"
 #include "Platform.h"
+#include <cmath>
 
 Circle::Circle() : Shape()
 {
 
 }
+Circle::Circle(double x, double y, double vx, double vy, int radius, Color c) : Shape()
+,x(x)
+,y(y)
+,radius(radius)
+,vx(vx)
+,vy(vy)
+,color(c)
+
+{}
 
 Circle::Circle(double x, double y, double vx, double vy, int radius) : Shape()
 ,x(x)
@@ -15,6 +25,7 @@ Circle::Circle(double x, double y, double vx, double vy, int radius) : Shape()
 ,radius(radius)
 ,vx(vx)
 ,vy(vy)
+,color(Color::RED)
 
 {}
 void Circle::move(double time){
@@ -34,7 +45,7 @@ void Circle::bounce_platform(){
     speed_up();
 }
 
-void Circle::bounce_ceiling(){\
+void Circle::bounce_ceiling(){
 
     vy=vy*(-1);
     speed_up();
@@ -42,8 +53,8 @@ void Circle::bounce_ceiling(){\
 }
 
 void Circle::speed_up(){
-    vx*=1.25;
-    vy*=1.25;
+    vx*=1.20;
+    vy*=1.20;
 }
 
 int Circle::isPlayable(){
@@ -54,11 +65,16 @@ int Circle::isPlayable(){
         return 1;
     return 0;
 }
+bool Circle::intersect(const Circle& ball){
+    if (std::pow((ball.x - x),2.0) + std::pow((y-ball.y),2.0) <= std::pow((radius + ball.radius),2.0))
+        return true;
+    return false;
 
+}
 
 void Circle::render(std::vector<Color> &pixmap, int width, int height) const
 {
-    circleFill(pixmap,Color(255,0,0),radius,x,y,width);
+    circleFill(pixmap,color,radius,x,y,width);
 }
 
 Shape *Circle::cloneNew() const
