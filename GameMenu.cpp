@@ -64,6 +64,9 @@ bool GameMenu::tick()
             currentGame = items[activeItem].action;
             if(currentGame == nullptr)
                 return false;
+            else {
+                currentGame->reset();
+            }
         }
         else {
             int movement = middleButton.moveDelta();

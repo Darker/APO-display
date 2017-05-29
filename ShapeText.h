@@ -44,6 +44,8 @@ public:
     };
 
     static FontCache GLOBAL_CACHE;
+    void setText(const std::string& value);
+
 protected:
     std::string text;
     std::string fontPath;
