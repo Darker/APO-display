@@ -36,7 +36,6 @@ std::vector<Shape*> Game::getShapes()
     // copy every shape into new array and return that array
     shapeMutex.lock();
     returnArray.push_back(new ShapeText(pl1_str, Color::RED, GAME_WIDTH/2 - 30, 30, "diablo.ttf"));
-    //returnArray.push_back(new ShapeText("SEND NUDES", Color::BLUE565, GAME_WIDTH/2-50, 30, "diablo.ttf"));
     returnArray.push_back(new ShapeText(pl2_str, Color::RED, GAME_WIDTH/2 + 30, 30, "diablo.ttf"));
     returnArray.push_back(circle.cloneNew());
     returnArray.push_back(platform1.cloneNew());
@@ -93,6 +92,25 @@ bool Game::tick()
         circle.bounce_ceiling();
         //circle.bounce_platform();
     }
+    shapeMutex.unlock();
+    return true;
+}
+
+bool Game::render(std::vector<Color> &pixmap, int pixmapWidth, int pixmapHeight)
+{
+//    ShapeText pl1sc;
+//    ShapeText pl2sc;
+    // LOCK MUTEX!
+    // copy every shape into new array and return that array
+    shapeMutex.lock();
+//    pl1sc = new ShapeText(pl1_str, Color::RED, GAME_WIDTH/2 - 30, 30, "diablo.ttf"));
+//    pl2sc = new ShapeText(pl2_str, Color::RED, GAME_WIDTH/2 - 30, 30, "diablo.ttf"));
+    ShapeText(pl1_str, Color::RED, GAME_WIDTH/2 - 30, 30, "diablo.ttf").render(pixmap, pixmapWidth, pixmapHeight);
+    ShapeText(pl2_str, Color::RED, GAME_WIDTH/2 + 30, 30, "diablo.ttf").render(pixmap, pixmapWidth, pixmapHeight);
+
+    (circle).render(pixmap, pixmapWidth, pixmapHeight);
+    (platform1).render(pixmap, pixmapWidth, pixmapHeight);
+    (platform2).render(pixmap, pixmapWidth, pixmapHeight);
     shapeMutex.unlock();
     return true;
 }
