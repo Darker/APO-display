@@ -102,17 +102,17 @@ bool Game::render(std::vector<Color> &pixmap, int pixmapWidth, int pixmapHeight)
     ShapeText(pl1_str, Color::RED, GAME_WIDTH/2 - 30, 30, "diablo.ttf").render(pixmap, pixmapWidth, pixmapHeight);
     ShapeText(pl2_str, Color::RED, GAME_WIDTH/2 + 30, 30, "diablo.ttf").render(pixmap, pixmapWidth, pixmapHeight);
 
-    (circle).render(pixmap, pixmapWidth, pixmapHeight);
-    (platform1).render(pixmap, pixmapWidth, pixmapHeight);
-    (platform2).render(pixmap, pixmapWidth, pixmapHeight);
+    circle.render(pixmap, pixmapWidth, pixmapHeight);
+    platform1.render(pixmap, pixmapWidth, pixmapHeight);
+    platform2.render(pixmap, pixmapWidth, pixmapHeight);
     shapeMutex.unlock();
     return true;
 }
 
 void Game::reset(){
 
-    player1_score =0;
-    player2_score =0;
+    player1_score = 0;
+    player2_score = 0;
 
     std::uniform_real_distribution<double> speed(0.0, 100);
 
