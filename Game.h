@@ -56,6 +56,7 @@ protected:
     // GameInterface interface
 public:
     bool render(std::vector<Color> &pixmap, int pixmapWidth, int pixmapHeight);
+    void reset();
 };
 
 #endif // GAME_H

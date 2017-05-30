@@ -14,6 +14,8 @@
 #include "GameIntersectionTest.h"
 #include "GameMenu.h"
 int mainQt(int argc, char *argv[]) {
+
+
     // Register meta types for events
     qRegisterMetaType<Color>("Color");
     qRegisterMetaType<std::vector<Color> >("std::vector<Color>");
@@ -23,16 +25,19 @@ int mainQt(int argc, char *argv[]) {
     GameSignalsSlots* signalForward = new GameSignalsSlots(w);
     w->show();
     GameInterface* game = nullptr;
-#ifdef _JAKUBX
+
     GameMenu* menu = new GameMenu();
     game = menu;
     menu->addEntry("Intersections", new GameIntersectionTest());
     menu->addEntry("Pong", new Game());
     menu->addEntry("Car", new GameJakub());
     menu->addEntry("Exit", nullptr);
-#else
-    game = new Game();
-#endif
+
+    if(argc > 1)
+        menu->selectItem(argv[1]);
+
+   // game = new Game();
+
     signalForward->game = game;
     signalForward->window = w;
 
