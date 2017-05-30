@@ -15,10 +15,6 @@ Game::Game()
     reset();
 }
 
-void Game::movePlayer(int playerID, int offset)
-{
-
-}
 
 std::vector<Shape*> Game::getShapes()
 {
