@@ -12,8 +12,8 @@ public:
     GameMenu();
     virtual std::vector<Shape*> getShapes() override;
     virtual bool tick() override;
-    virtual void addEntry(const std::string entry, GameInterface* game);
-
+    virtual void addEntry(const std::string& entry, GameInterface* game);
+    virtual void selectItem(const std::string&);
 protected:
     std::mutex shapeMutex;
 
