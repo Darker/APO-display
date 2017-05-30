@@ -137,16 +137,17 @@ std::thread drawThread;
 std::thread gameThread;
 std::thread inputThread;
 
-bool prasoHraJakub = false;
-void startLinuxRenderer() {
+//bool prasoHraJakub = false;
+void startLinuxRenderer(const std::string selectedItem) {
 
-    if(prasoHraJakub) {
+    if(selectedItem.length() != 0) {
         GameMenu* menu = new GameMenu();
         game = menu;
         menu->addEntry("Intersections", new GameIntersectionTest());
         menu->addEntry("Pong", new Game());
         menu->addEntry("Car", new GameJakub());
         menu->addEntry("Exit", nullptr);
+        menu->selectItem(selectedItem);
     }
     else {
         game = new Game();
@@ -166,9 +167,9 @@ void exitLinuxRenderer() {
 
 int mainLinux(int argc, char *argv[])
 {
-    prasoHraJakub = argc>1 && (strcmp(argv[1], "jakub")==0);
+    //prasoHraJakub = argc>1 && (strcmp(argv[1], "jakub")==0);
 
-    startLinuxRenderer();
+    startLinuxRenderer(argv[1]);
     exitLinuxRenderer();
     return 0;
 }

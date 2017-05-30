@@ -1,11 +1,11 @@
 #include <QApplication>
-void startLinuxRenderer();
+void startLinuxRenderer(const std::string );
 void exitLinuxRenderer();
 
 int mainQtLinux(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    startLinuxRenderer();
+    startLinuxRenderer("");
     a.exec();
     exitLinuxRenderer();
 }
