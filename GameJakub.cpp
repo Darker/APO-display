@@ -66,9 +66,7 @@ bool GameJakub::tick()
     if(over) {
         int travInt = (int)std::round(travelled);
         scoreInfo.setText(std::string("Travelled: ")+std::to_string(travInt));
-        float x0,y0, x1,y1;
-        scoreInfo.boundingRect(x0,y0, x1,y1);
-        scoreInfo.x = (GAME_WIDTH-x1+x0)/2;
+        scoreInfo.x = 0;
 
         return !button2.isClicked();
     }
