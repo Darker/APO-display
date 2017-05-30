@@ -1,7 +1,7 @@
 #include "GameMenu.h"
 #include "ShapeText.h"
 #include "defines.h"
-
+#include <algorithm>
 GameMenu::GameMenu() :
     GameInterface()
   , switchCooldown(0.3)
@@ -107,10 +107,22 @@ void GameMenu::addEntry(const std::string& entry, GameInterface* game)
     items.push_back(item);
 }
 
-void GameMenu::selectItem(const std::string&)
+void GameMenu::selectItem(const std::string& item)
 {
-    std::unique_lock<std::mutex> lk{shapeMutex};
 
+    std::string itemLowerCase = item;
+    std::transform(itemLowerCase.begin(), itemLowerCase.end(), itemLowerCase.begin(), ::tolower);
+    //foreach (const ShapeMenuItem& item, items) {
+    for(size_t i=0, l=items.size(); i<l; ++i) {
+        const ShapeMenuItem& item = items[i];
+        std::string curItem = item.text;
+        std::transform(curItem.begin(), curItem.end(), curItem.begin(), ::tolower);
+        if(curItem == itemLowerCase) {
+            std::unique_lock<std::mutex> lk{shapeMutex};
+            currentGame = item.action;
+            return;
+        }
+    }
 }
 
 GameButton* GameMenu::getButtonRED()
