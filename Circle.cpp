@@ -65,12 +65,6 @@ int Circle::isPlayable(){
         return 1;
     return 0;
 }
-bool Circle::intersect(const Circle& ball){
-    if (std::pow((ball.x - x),2.0) + std::pow((y-ball.y),2.0) <= std::pow((radius + ball.radius),2.0))
-        return true;
-    return false;
-
-}
 
 void Circle::render(std::vector<Color> &pixmap, int width, int height) const
 {
