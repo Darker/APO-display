@@ -140,18 +140,16 @@ std::thread inputThread;
 //bool prasoHraJakub = false;
 void startLinuxRenderer(const std::string selectedItem) {
 
-    if(selectedItem.length() != 0) {
-        GameMenu* menu = new GameMenu();
-        game = menu;
-        menu->addEntry("Intersections", new GameIntersectionTest());
-        menu->addEntry("Pong", new Game());
-        menu->addEntry("Car", new GameJakub());
-        menu->addEntry("Exit", nullptr);
+
+    GameMenu* menu = new GameMenu();
+    game = menu;
+    menu->addEntry("Intersections", new GameIntersectionTest());
+    menu->addEntry("Pong", new Game());
+    menu->addEntry("Car", new GameJakub());
+    menu->addEntry("Exit", nullptr);
+    if(selectedItem.length()>0)
         menu->selectItem(selectedItem);
-    }
-    else {
-        game = new Game();
-    }
+
 
     inputThread = std::thread(readInput);
     drawThread = std::thread(paintGame);
@@ -169,7 +167,7 @@ int mainLinux(int argc, char *argv[])
 {
     //prasoHraJakub = argc>1 && (strcmp(argv[1], "jakub")==0);
 
-    startLinuxRenderer(argv[1]);
+    startLinuxRenderer(acgc>1?argv[1]:"");
     exitLinuxRenderer();
     return 0;
 }
