@@ -9,7 +9,7 @@ class Platform : public Rectangle
 public:
     Platform();
 
-    Platform(double length, double width, double x,double y);
+    Platform(Color color, double length, double width, double x, double y);
 
 
 
