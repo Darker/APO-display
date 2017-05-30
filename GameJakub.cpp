@@ -51,15 +51,18 @@ bool GameJakub::render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHe
         }
     }
     else {
-
+        gameOver.render(pixmap, pixmapWidth, pixmapHeight);
+        scoreInfo.render(pixmap, pixmapWidth, pixmapHeight);
+        static ShapeText TEXT_EXIT_INFO("Press middle (green) button to exit.", Color::GRAY, 30,GAME_HEIGHT-15);
+        TEXT_EXIT_INFO.scale = 13;
+        TEXT_EXIT_INFO.render(pixmap, pixmapWidth, pixmapHeight);
     }
-
 }
 
 bool GameJakub::tick()
 {
     const double deltaT = sinceLastTick()/1000.0;
-    shapeMutex.lock();
+    std::unique_lock<std::mutex> lk{shapeMutex};
     if(over) {
         int travInt = (int)std::round(travelled);
         scoreInfo.setText(std::string("Travelled: ")+std::to_string(travInt));
@@ -112,8 +115,6 @@ bool GameJakub::tick()
             l--;
         }
     }
-
-    shapeMutex.unlock();
     return true;
 }
 
@@ -125,8 +126,9 @@ void GameJakub::reset()
     shapesToGenerate = 1;
     over = false;
     travelled = 0;
-    float x0,y0, x1,y1;
-    gameOver.boundingRect(x0,y0, x1,y1);
-    gameOver.x = (GAME_WIDTH-x1+x0)/2;
+    //float x0,y0, x1,y1;
+    //gameOver.boundingRect(x0,y0, x1,y1);
+    //gameOver.x = (GAME_WIDTH-x1+x0)/2;
+    gameOver.x = 0;
 }
 

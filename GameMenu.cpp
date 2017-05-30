@@ -52,6 +52,7 @@ bool GameMenu::tick()
             // clear any movement info
             middleButton.isClicked();
             middleButton.moveDelta();
+            return true;
         }
         else {
             return true;
@@ -88,12 +89,10 @@ bool GameMenu::tick()
             }
         }
     }
-
-
     return true;
 }
 
-void GameMenu::addEntry(const std::string entry, GameInterface* game)
+void GameMenu::addEntry(const std::string& entry, GameInterface* game)
 {
     ShapeMenuItem item{entry, game};
     item.setX(0);
@@ -106,10 +105,15 @@ void GameMenu::addEntry(const std::string entry, GameInterface* game)
     }
 
     items.push_back(item);
+}
+
+void GameMenu::selectItem(const std::string&)
+{
+    std::unique_lock<std::mutex> lk{shapeMutex};
 
 }
 
-GameButton*GameMenu::getButtonRED()
+GameButton* GameMenu::getButtonRED()
 {
     std::unique_lock<std::mutex> lk{shapeMutex};
     if(currentGame!=nullptr) {
@@ -118,7 +122,7 @@ GameButton*GameMenu::getButtonRED()
     return nullptr;
 }
 
-GameButton*GameMenu::getButtonBLUE()
+GameButton* GameMenu::getButtonBLUE()
 {
     std::unique_lock<std::mutex> lk{shapeMutex};
     if(currentGame!=nullptr) {
