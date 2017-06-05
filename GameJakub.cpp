@@ -12,7 +12,7 @@ GameJakub::GameJakub()
     , drawY(GAME_HEIGHT/2.0)
     , car(ShapeCar::TRUNK_LENGTH/2.0+1, GAME_HEIGHT/2, Color(0,100,255))
     , mt(rd())
-    , shapesPerSec(2.5)
+    , shapesPerSec(2)
     , speed(1)
     , shapesToGenerate(1)
     , gameOver("GAME OVER", Color::RED, 0, 40, "diablo.ttf")
@@ -23,22 +23,7 @@ GameJakub::GameJakub()
 
 std::vector<Shape*> GameJakub::getShapes()
 {
-    std::vector<Shape*> result;
-    shapeMutex.lock();
-    //result.push_back(paintArea.cloneNew());
-    //result.push_back(circle.cloneNew());
-    //result.push_back(new Rectangle(0,0,GAME_WIDTH, 40));
-    result.push_back(car.cloneNew());
-    for(size_t i=0, l=obstructions.size(); i<l; ++i) {
-        //result.push_back(new Rectangle(obstructions[i].x, obstructions[i].y, obstructions[i].width, obstructions[i].height, Color(255,255,11)));
-        result.push_back(obstructions[i].cloneNew());
-    }
-//    for(size_t i=0, l=255; i<l; ++i) {
-//        result.push_back(new Rectangle(i,i,2,2,Color(i,i,i)));
-//    }
-    //result.push_back(testRect.cloneNew());
-    shapeMutex.unlock();
-    return result;
+    return std::vector<Shape*>(0);
 }
 
 bool GameJakub::render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHeight)
@@ -57,6 +42,7 @@ bool GameJakub::render(std::vector<Color>& pixmap, int pixmapWidth, int pixmapHe
         TEXT_EXIT_INFO.scale = 13;
         TEXT_EXIT_INFO.render(pixmap, pixmapWidth, pixmapHeight);
     }
+    return true;
 }
 
 bool GameJakub::tick()
@@ -80,7 +66,7 @@ bool GameJakub::tick()
         cary = GAME_HEIGHT-carBorder;
     car.setCy(cary);
 
-    shapesPerSec += deltaT/200.0;
+    shapesPerSec += deltaT/100.0;
     speed += deltaT/20.0;
     shapesToGenerate += shapesPerSec*deltaT;
     const double movement = deltaT*19*speed;
@@ -128,5 +114,7 @@ void GameJakub::reset()
     //gameOver.boundingRect(x0,y0, x1,y1);
     //gameOver.x = (GAME_WIDTH-x1+x0)/2;
     gameOver.x = 0;
+    // reset time counter
+    sinceLastTick();
 }
 

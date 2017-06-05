@@ -167,7 +167,7 @@ int mainLinux(int argc, char *argv[])
 {
     //prasoHraJakub = argc>1 && (strcmp(argv[1], "jakub")==0);
 
-    startLinuxRenderer(acgc>1?argv[1]:"");
+    startLinuxRenderer(argc>1?argv[1]:"");
     exitLinuxRenderer();
     return 0;
 }
